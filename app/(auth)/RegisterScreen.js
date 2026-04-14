@@ -130,7 +130,7 @@ export default function RegisterScreen({ navigation, route }) {
               </Text>
               <TextInput
                 className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-dark text-base"
-                placeholder="+383 44 123 456"
+                placeholder="+383 xx xxx xxx"
                 placeholderTextColor="#6C757D"
                 keyboardType="phone-pad"
                 value={phone}
