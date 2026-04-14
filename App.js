@@ -14,6 +14,7 @@ import RegisterScreen   from './app/(auth)/RegisterScreen';
 
 import HomeScreen from './app/(buyer)/HomeScreen';
 import ProductDetailScreen from './app/(buyer)/ProductDetailScreen';
+import FarmerProfileScreen from './app/(buyer)/FarmerProfileScreen';
 
 import DashboardScreen from './app/(farmer)/DashboardScreen';
 
@@ -37,6 +38,7 @@ function BuyerNavigator() {
     <BuyerStack.Navigator screenOptions={{ headerShown: false }}>
       <BuyerStack.Screen name="BuyerTabs"     component={BuyerTabs} />
       <BuyerStack.Screen name="ProductDetail" component={ProductDetailScreen} />
+      <BuyerStack.Screen name="FarmerProfile"  component={FarmerProfileScreen} />
     </BuyerStack.Navigator>
   );
 }
