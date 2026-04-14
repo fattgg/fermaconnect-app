@@ -8,21 +8,18 @@ import { Text } from 'react-native';
 
 import useAuth from './hooks/useAuth';
 
-// Auth screens
 import OnboardingScreen from './app/(auth)/OnboardingScreen';
 import LoginScreen      from './app/(auth)/LoginScreen';
 import RegisterScreen   from './app/(auth)/RegisterScreen';
 
-// Buyer screens
 import HomeScreen from './app/(buyer)/HomeScreen';
+import ProductDetailScreen from './app/(buyer)/ProductDetailScreen';
 
-// Farmer screens
 import DashboardScreen from './app/(farmer)/DashboardScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab   = createBottomTabNavigator();
 
-// ─── Auth Stack ───────────────────────────────────────────────
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -33,12 +30,22 @@ function AuthStack() {
   );
 }
 
-// ─── Buyer Tabs ───────────────────────────────────────────────
+const BuyerStack = createNativeStackNavigator();
+
+function BuyerNavigator() {
+  return (
+    <BuyerStack.Navigator screenOptions={{ headerShown: false }}>
+      <BuyerStack.Screen name="BuyerTabs"     component={BuyerTabs} />
+      <BuyerStack.Screen name="ProductDetail" component={ProductDetailScreen} />
+    </BuyerStack.Navigator>
+  );
+}
+
 function BuyerTabs() {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown:     false,
+        headerShown:           false,
         tabBarActiveTintColor:   '#52B788',
         tabBarInactiveTintColor: '#6C757D',
         tabBarStyle: {
@@ -64,7 +71,6 @@ function BuyerTabs() {
   );
 }
 
-// ─── Farmer Tabs ──────────────────────────────────────────────
 function FarmerTabs() {
   return (
     <Tab.Navigator
@@ -95,7 +101,6 @@ function FarmerTabs() {
   );
 }
 
-// ─── Root ─────────────────────────────────────────────────────
 export default function App() {
   const { isLoading, isAuthenticated, isFarmer, loadFromStorage } = useAuth();
 
@@ -115,7 +120,7 @@ export default function App() {
     <NavigationContainer>
       {!isAuthenticated && <AuthStack />}
       {isAuthenticated && isFarmer  && <FarmerTabs />}
-      {isAuthenticated && !isFarmer && <BuyerTabs />}
+      {isAuthenticated && !isFarmer && <BuyerNavigator />}
     </NavigationContainer>
   );
 }
