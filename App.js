@@ -7,6 +7,7 @@ import useAuth from './hooks/useAuth';
 
 import OnboardingScreen from './app/(auth)/OnboardingScreen';
 import LoginScreen      from './app/(auth)/LoginScreen';
+import RegisterScreen   from './app/(auth)/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ function AuthStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Login"      component={LoginScreen} />
+      <Stack.Screen name="Register"   component={RegisterScreen} />
     </Stack.Navigator>
   );
 }
