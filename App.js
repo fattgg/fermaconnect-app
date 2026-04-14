@@ -1,10 +1,26 @@
 import './global.css';
 import { useEffect } from 'react';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import useAuth from './hooks/useAuth';
 
+import OnboardingScreen from './app/(auth)/OnboardingScreen';
+import LoginScreen      from './app/(auth)/LoginScreen';
+
+const Stack = createNativeStackNavigator();
+
+function AuthStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="Login"      component={LoginScreen} />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
-  const { isLoading, isAuthenticated, user, loadFromStorage } = useAuth();
+  const { isLoading, loadFromStorage } = useAuth();
 
   useEffect(() => {
     loadFromStorage();
@@ -19,18 +35,8 @@ export default function App() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-light px-6">
-      <Text className="text-2xl font-bold text-primary mb-4">
-        FermaConnect
-      </Text>
-      <Text className="text-muted text-base">
-        Auth state: {isAuthenticated ? 'Logged in' : 'Not logged in'}
-      </Text>
-      {user && (
-        <Text className="text-dark text-base mt-2">
-          Role: {user.role}
-        </Text>
-      )}
-    </View>
+    <NavigationContainer>
+      <AuthStack />
+    </NavigationContainer>
   );
 }
