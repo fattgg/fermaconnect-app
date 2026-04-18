@@ -7,23 +7,29 @@ import { createBottomTabNavigator }     from '@react-navigation/bottom-tabs';
 
 import useAuth from './hooks/useAuth';
 
+// Auth screens
 import OnboardingScreen from './app/(auth)/OnboardingScreen';
 import LoginScreen      from './app/(auth)/LoginScreen';
 import RegisterScreen   from './app/(auth)/RegisterScreen';
 
+// Buyer screens
 import HomeScreen          from './app/(buyer)/HomeScreen';
 import ProductDetailScreen from './app/(buyer)/ProductDetailScreen';
 import FarmerProfileScreen from './app/(buyer)/FarmerProfileScreen';
 import OrderRequestScreen  from './app/(buyer)/OrderRequestScreen';
 import MyOrdersScreen      from './app/(buyer)/MyOrdersScreen';
 
-import DashboardScreen from './app/(farmer)/DashboardScreen';
+// Farmer screens
+import DashboardScreen    from './app/(farmer)/DashboardScreen';
+import MyListingsScreen   from './app/(farmer)/MyListingsScreen';
+import AddProductScreen   from './app/(farmer)/AddProductScreen';
 
 const Stack       = createNativeStackNavigator();
 const BuyerStack  = createNativeStackNavigator();
 const FarmerStack = createNativeStackNavigator();
 const Tab         = createBottomTabNavigator();
 
+// ─── Auth Stack ───────────────────────────────────────────────
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -34,6 +40,7 @@ function AuthStack() {
   );
 }
 
+// ─── Buyer Tabs ───────────────────────────────────────────────
 function BuyerTabs() {
   return (
     <Tab.Navigator
@@ -74,6 +81,7 @@ function BuyerTabs() {
   );
 }
 
+// ─── Buyer Navigator ──────────────────────────────────────────
 function BuyerNavigator() {
   return (
     <BuyerStack.Navigator screenOptions={{ headerShown: false }}>
@@ -85,6 +93,7 @@ function BuyerNavigator() {
   );
 }
 
+// ─── Farmer Tabs ──────────────────────────────────────────────
 function FarmerTabs() {
   return (
     <Tab.Navigator
@@ -111,18 +120,33 @@ function FarmerTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Listings"
+        component={MyListingsScreen}
+        options={{
+          tabBarLabel: 'Listings',
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📋</Text>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
+// ─── Farmer Navigator ─────────────────────────────────────────
 function FarmerNavigator() {
   return (
     <FarmerStack.Navigator screenOptions={{ headerShown: false }}>
-      <FarmerStack.Screen name="FarmerTabs" component={FarmerTabs} />
+      <FarmerStack.Screen name="FarmerTabs"  component={FarmerTabs} />
+      <FarmerStack.Screen name="AddProduct"  component={AddProductScreen} />
+      <FarmerStack.Screen name="EditProduct" component={AddProductScreen} />
+      <FarmerStack.Screen name="FarmerOrders" component={MyOrdersScreen} />
     </FarmerStack.Navigator>
   );
 }
 
+// ─── Root ─────────────────────────────────────────────────────
 export default function App() {
   const { isLoading, isAuthenticated, isFarmer, loadFromStorage } = useAuth();
 
