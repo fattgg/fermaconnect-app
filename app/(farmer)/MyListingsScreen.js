@@ -98,9 +98,7 @@ export default function MyListingsScreen({ navigation }) {
         limit:     50,
         available: 'all',
       });
-
-      console.log('user.id:', user?.id);
-      console.log('first product farmer.id:', response.data.products[0]?.farmer?.id);
+      
       const mine = response.data.products.filter(
         p => p.farmer?.id === user?.id
       );

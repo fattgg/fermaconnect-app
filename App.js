@@ -20,10 +20,11 @@ import OrderRequestScreen  from './app/(buyer)/OrderRequestScreen';
 import MyOrdersScreen      from './app/(buyer)/MyOrdersScreen';
 
 // Farmer screens
-import DashboardScreen    from './app/(farmer)/DashboardScreen';
-import MyListingsScreen   from './app/(farmer)/MyListingsScreen';
-import AddProductScreen   from './app/(farmer)/AddProductScreen';
-import EditProductScreen from './app/(farmer)/EditProductScreen';
+import DashboardScreen       from './app/(farmer)/DashboardScreen';
+import MyListingsScreen      from './app/(farmer)/MyListingsScreen';
+import AddProductScreen      from './app/(farmer)/AddProductScreen';
+import EditProductScreen     from './app/(farmer)/EditProductScreen';
+import IncomingOrdersScreen  from './app/(farmer)/IncomingOrdersScreen';
 
 const Stack       = createNativeStackNavigator();
 const BuyerStack  = createNativeStackNavigator();
@@ -131,6 +132,16 @@ function FarmerTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="FarmerOrders"
+        component={IncomingOrdersScreen}
+        options={{
+          tabBarLabel: 'Orders',
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📬</Text>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -139,10 +150,9 @@ function FarmerTabs() {
 function FarmerNavigator() {
   return (
     <FarmerStack.Navigator screenOptions={{ headerShown: false }}>
-      <FarmerStack.Screen name="FarmerTabs"  component={FarmerTabs} />
-      <FarmerStack.Screen name="AddProduct"  component={AddProductScreen} />
-      <FarmerStack.Screen name="EditProduct" component={EditProductScreen} />
-      <FarmerStack.Screen name="FarmerOrders" component={MyOrdersScreen} />
+      <FarmerStack.Screen name="FarmerTabs"   component={FarmerTabs} />
+      <FarmerStack.Screen name="AddProduct"   component={AddProductScreen} />
+      <FarmerStack.Screen name="EditProduct"  component={EditProductScreen} />
     </FarmerStack.Navigator>
   );
 }
