@@ -1,0 +1,24 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "logout": "Abmelden"
+  },
+  "auth": {
+    "welcome": "Willkommen bei FermaConnect",
+    "tagline": "Kosovos Bauern direkt mit\nKäufern verbinden",
+    "iam": "Ich bin...",
+    "farmer": "Bauer",
+    "buyer": "Käufer",
+    "farmerDesc": "Produkte listen und Bestellungen erhalten",
+    "buyerDesc": "Frische lokale Produkte durchsuchen",
+    "footer": "Frisch von Kosovo-Farmen, direkt zu Ihnen"
+  }
+}

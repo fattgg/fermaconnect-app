@@ -1,0 +1,24 @@
+{
+  "common": {
+    "loading": "Duke u ngarkuar...",
+    "error": "Diçka shkoi gabim",
+    "retry": "Provo përsëri",
+    "cancel": "Anulo",
+    "confirm": "Konfirmo",
+    "save": "Ruaj",
+    "delete": "Fshi",
+    "edit": "Ndrysho",
+    "back": "Kthehu",
+    "logout": "Dilni"
+  },
+  "auth": {
+    "welcome": "Mirë se vini në FermaConnect",
+    "tagline": "Duke lidhur fermerët e Kosovës\ndirekt me blerësit",
+    "iam": "Unë jam...",
+    "farmer": "Fermer",
+    "buyer": "Blerës",
+    "farmerDesc": "Listoni produktet tuaja dhe merrni porosi",
+    "buyerDesc": "Shfletoni produkte të freskëta lokale",
+    "footer": "Të freskëta nga fermat e Kosovës, direkt tek ju"
+  }
+}

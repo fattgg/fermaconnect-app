@@ -26,6 +26,8 @@ import AddProductScreen      from './app/(farmer)/AddProductScreen';
 import EditProductScreen     from './app/(farmer)/EditProductScreen';
 import IncomingOrdersScreen  from './app/(farmer)/IncomingOrdersScreen';
 
+import { initI18n } from './i18n';
+
 const Stack       = createNativeStackNavigator();
 const BuyerStack  = createNativeStackNavigator();
 const FarmerStack = createNativeStackNavigator();
@@ -166,11 +168,14 @@ function FarmerNavigator() {
 export default function App() {
   const { isLoading, isAuthenticated, isFarmer, loadFromStorage } = useAuth();
 
-  useEffect(() => {
-    fetch('https://fermaconnect-api.onrender.com/health')
-      .catch(() => {});
+useEffect(() => {
+  const initialize = async () => {
+    await initI18n();
+    fetch('https://fermaconnect-api.onrender.com/health').catch(() => {});
     loadFromStorage();
-  }, []);
+  };
+  initialize();
+}, []);
 
   if (isLoading) {
     return (

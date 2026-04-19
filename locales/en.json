@@ -1,0 +1,24 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "logout": "Sign out"
+  },
+  "auth": {
+    "welcome": "Welcome to FermaConnect",
+    "tagline": "Connecting Kosovo farmers\ndirectly with buyers",
+    "iam": "I am a...",
+    "farmer": "Farmer",
+    "buyer": "Buyer",
+    "farmerDesc": "List your products and receive orders",
+    "buyerDesc": "Browse fresh local products",
+    "footer": "Fresh from Kosovo farms, direct to you"
+  }
+}
