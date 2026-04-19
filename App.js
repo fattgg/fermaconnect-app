@@ -23,6 +23,7 @@ import MyOrdersScreen      from './app/(buyer)/MyOrdersScreen';
 import DashboardScreen    from './app/(farmer)/DashboardScreen';
 import MyListingsScreen   from './app/(farmer)/MyListingsScreen';
 import AddProductScreen   from './app/(farmer)/AddProductScreen';
+import EditProductScreen from './app/(farmer)/EditProductScreen';
 
 const Stack       = createNativeStackNavigator();
 const BuyerStack  = createNativeStackNavigator();
@@ -140,7 +141,7 @@ function FarmerNavigator() {
     <FarmerStack.Navigator screenOptions={{ headerShown: false }}>
       <FarmerStack.Screen name="FarmerTabs"  component={FarmerTabs} />
       <FarmerStack.Screen name="AddProduct"  component={AddProductScreen} />
-      <FarmerStack.Screen name="EditProduct" component={AddProductScreen} />
+      <FarmerStack.Screen name="EditProduct" component={EditProductScreen} />
       <FarmerStack.Screen name="FarmerOrders" component={MyOrdersScreen} />
     </FarmerStack.Navigator>
   );

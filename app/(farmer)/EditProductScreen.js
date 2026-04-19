@@ -9,55 +9,56 @@ import { CATEGORIES } from '../../constants';
 
 const UNITS = ['kg', 'piece', 'bundle', 'litre', 'gram', 'dozen'];
 
-export default function AddProductScreen({ navigation }) {
-  const [name,        setName]        = useState('');
-  const [category,    setCategory]    = useState('');
-  const [description, setDescription] = useState('');
-  const [price,       setPrice]       = useState('');
-  const [unit,        setUnit]        = useState('');
-  const [quantity,    setQuantity]    = useState('');
-  const [photos,      setPhotos]      = useState([]);
+export default function EditProductScreen({ navigation, route }) {
+  const { product } = route.params;
+
+  const [name,        setName]        = useState(product.name);
+  const [category,    setCategory]    = useState(product.category);
+  const [description, setDescription] = useState(product.description || '');
+  const [price,       setPrice]       = useState(String(product.price));
+  const [unit,        setUnit]        = useState(product.unit);
+  const [quantity,    setQuantity]    = useState(String(product.quantity));
+  const [existingPhotos, setExistingPhotos] = useState(product.photo_urls || []);
+  const [newPhotos,   setNewPhotos]   = useState([]);
   const [loading,     setLoading]     = useState(false);
 
   const [showCategories, setShowCategories] = useState(false);
   const [showUnits,      setShowUnits]      = useState(false);
 
-const pickPhoto = async () => {
-  if (photos.length >= 3) {
-    Alert.alert('Limit reached', 'You can upload maximum 3 photos');
-    return;
-  }
-
-  try {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (!permission.granted) {
-      Alert.alert(
-        'Permission required',
-        'Please allow access to your photos in your device settings',
-        [{ text: 'OK' }]
-      );
+  const pickPhoto = async () => {
+    if (existingPhotos.length + newPhotos.length >= 3) {
+      Alert.alert('Limit reached', 'You can have maximum 3 photos');
       return;
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.8,
-    });
+    try {
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert('Permission required', 'Please allow access to your photos');
+        return;
+      }
 
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setPhotos(prev => [...prev, result.assets[0]]);
-    }
-  } catch (error) {
-    console.error('Image picker error:', error);
-    Alert.alert('Error', 'Could not open photo library');
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets?.length > 0) {
+        setNewPhotos(prev => [...prev, result.assets[0]]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not open photo library');
     }
   };
 
-  const removePhoto = (index) => {
-    setPhotos(prev => prev.filter((_, i) => i !== index));
+  const removeExistingPhoto = (index) => {
+    setExistingPhotos(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeNewPhoto = (index) => {
+    setNewPhotos(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async () => {
@@ -76,7 +77,11 @@ const pickPhoto = async () => {
       formData.append('unit',        unit);
       formData.append('quantity', parseInt(quantity) || 0);
 
-      photos.forEach((photo, index) => {
+      existingPhotos.forEach(url => {
+        formData.append('existing_photos', url);
+      });
+
+      newPhotos.forEach((photo, index) => {
         const filename  = photo.uri.split('/').pop();
         const extension = filename.split('.').pop();
         formData.append('photos', {
@@ -86,22 +91,24 @@ const pickPhoto = async () => {
         });
       });
 
-      await productsAPI.create(formData);
+      await productsAPI.update(product.id, formData);
 
       Alert.alert(
         'Success',
-        'Product listed successfully!',
+        'Product updated successfully!',
         [{ text: 'OK', onPress: () => navigation.goBack() }]
       );
     } catch (error) {
       const message = error.response?.data?.message
         || error.response?.data?.errors?.[0]
-        || 'Failed to create product';
+        || 'Failed to update product';
       Alert.alert('Error', message);
     } finally {
       setLoading(false);
     }
   };
+
+  const totalPhotos = existingPhotos.length + newPhotos.length;
 
   return (
     <View className="flex-1 bg-light">
@@ -110,7 +117,7 @@ const pickPhoto = async () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text className="text-primary text-base font-bold">← Back</Text>
         </TouchableOpacity>
-        <Text className="text-xl font-bold text-dark">Add Product</Text>
+        <Text className="text-xl font-bold text-dark">Edit Product</Text>
       </View>
 
       <ScrollView
@@ -121,28 +128,48 @@ const pickPhoto = async () => {
         <View className="mb-6">
           <Text className="text-dark font-bold text-base mb-3">
             Photos
-            <Text className="text-muted font-normal"> (max 3)</Text>
+            <Text className="text-muted font-normal"> ({totalPhotos}/3)</Text>
           </Text>
-          <View className="flex-row gap-x-3">
-            {photos.map((photo, index) => (
-              <View key={index} className="relative">
+          <View className="flex-row gap-x-3 flex-wrap">
+
+            {existingPhotos.map((url, index) => (
+              <View key={`existing-${index}`} className="relative mb-3">
                 <Image
-                  source={{ uri: photo.uri }}
+                  source={{ uri: url }}
                   className="w-24 h-24 rounded-xl"
                   resizeMode="cover"
                 />
                 <TouchableOpacity
                   className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full items-center justify-center"
-                  onPress={() => removePhoto(index)}
+                  onPress={() => removeExistingPhoto(index)}
                 >
                   <Text className="text-white text-xs font-bold">✕</Text>
                 </TouchableOpacity>
               </View>
             ))}
 
-            {photos.length < 3 && (
+            {newPhotos.map((photo, index) => (
+              <View key={`new-${index}`} className="relative mb-3">
+                <Image
+                  source={{ uri: photo.uri }}
+                  className="w-24 h-24 rounded-xl"
+                  resizeMode="cover"
+                />
+                <View className="absolute -top-2 -left-2 bg-secondary rounded-full px-1">
+                  <Text className="text-white text-xs font-bold">New</Text>
+                </View>
+                <TouchableOpacity
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full items-center justify-center"
+                  onPress={() => removeNewPhoto(index)}
+                >
+                  <Text className="text-white text-xs font-bold">✕</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+
+            {totalPhotos < 3 && (
               <TouchableOpacity
-                className="w-24 h-24 bg-gray-100 rounded-xl items-center justify-center border-2 border-dashed border-gray-300"
+                className="w-24 h-24 bg-gray-100 rounded-xl items-center justify-center border-2 border-dashed border-gray-300 mb-3"
                 onPress={pickPhoto}
               >
                 <Text className="text-3xl">📷</Text>
@@ -158,8 +185,6 @@ const pickPhoto = async () => {
           </Text>
           <TextInput
             className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-dark text-base"
-            placeholder="e.g. Fresh Tomatoes"
-            placeholderTextColor="#6C757D"
             value={name}
             onChangeText={setName}
           />
@@ -176,11 +201,8 @@ const pickPhoto = async () => {
               setShowUnits(false);
             }}
           >
-            <Text className={category ? 'text-dark text-base' : 'text-muted text-base'}>
-              {category
-                ? CATEGORIES.find(c => c.value === category)?.label
-                : 'Select category'
-              }
+            <Text className="text-dark text-base">
+              {CATEGORIES.find(c => c.value === category)?.label || category}
             </Text>
             <Text className="text-muted">{showCategories ? '▲' : '▼'}</Text>
           </TouchableOpacity>
@@ -217,8 +239,6 @@ const pickPhoto = async () => {
           </Text>
           <TextInput
             className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-dark text-base"
-            placeholder="Describe your product..."
-            placeholderTextColor="#6C757D"
             multiline
             numberOfLines={3}
             style={{ textAlignVertical: 'top', minHeight: 80 }}
@@ -234,8 +254,6 @@ const pickPhoto = async () => {
             </Text>
             <TextInput
               className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-dark text-base"
-              placeholder="0.00"
-              placeholderTextColor="#6C757D"
               keyboardType="decimal-pad"
               value={price}
               onChangeText={setPrice}
@@ -252,9 +270,7 @@ const pickPhoto = async () => {
                 setShowCategories(false);
               }}
             >
-              <Text className={unit ? 'text-dark text-base' : 'text-muted text-base'}>
-                {unit || 'Select'}
-              </Text>
+              <Text className="text-dark text-base">{unit}</Text>
               <Text className="text-muted">{showUnits ? '▲' : '▼'}</Text>
             </TouchableOpacity>
             {showUnits && (
@@ -288,8 +304,6 @@ const pickPhoto = async () => {
           </Text>
           <TextInput
             className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-dark text-base"
-            placeholder="Available stock amount"
-            placeholderTextColor="#6C757D"
             keyboardType="number-pad"
             value={quantity}
             onChangeText={setQuantity}
@@ -304,7 +318,7 @@ const pickPhoto = async () => {
           {loading
             ? <ActivityIndicator color="white" />
             : <Text className="text-white font-bold text-base">
-                List Product
+                Save Changes
               </Text>
           }
         </TouchableOpacity>
