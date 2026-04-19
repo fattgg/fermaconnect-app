@@ -37,25 +37,26 @@ export default function DashboardScreen({ navigation }) {
   };
 
   const fetchStats = async () => {
-    try {
-      const [productsRes, ordersRes] = await Promise.all([
-        productsAPI.getAll({ limit: 50 }),
-        ordersAPI.getAll(),
-      ]);
+  try {
+    const [productsRes, ordersRes] = await Promise.all([
+      productsAPI.getAll({ limit: 50 }),
+      ordersAPI.getAll(),
+    ]);
 
-      const myProducts = productsRes.data.products;
-      const myOrders   = ordersRes.data.orders;
+    const allProducts = productsRes.data.products;
+    const myProducts  = allProducts.filter(p => p.farmer?.id === user?.id);
+    const myOrders    = ordersRes.data.orders;
 
-      setStats({
-        totalProducts:     myProducts.length,
-        availableProducts: myProducts.filter(p => p.available).length,
-        pendingOrders:     myOrders.filter(o => o.status === 'pending').length,
-        totalOrders:       myOrders.length,
-      });
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
-    }
-  };
+    setStats({
+      totalProducts:     myProducts.length,
+      availableProducts: myProducts.filter(p => p.available).length,
+      pendingOrders:     myOrders.filter(o => o.status === 'pending').length,
+      totalOrders:       myOrders.length,
+    });
+  } catch (error) {
+    console.error('Failed to fetch stats:', error);
+  }
+};
 
   const fetchWeather = async () => {
     try {

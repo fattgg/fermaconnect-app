@@ -1,5 +1,5 @@
 import './global.css';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ActivityIndicator, View, Text } from 'react-native';
 import { NavigationContainer }          from '@react-navigation/native';
 import { createNativeStackNavigator }   from '@react-navigation/native-stack';
@@ -30,6 +30,11 @@ const Stack       = createNativeStackNavigator();
 const BuyerStack  = createNativeStackNavigator();
 const FarmerStack = createNativeStackNavigator();
 const Tab         = createBottomTabNavigator();
+
+const linking = {
+  prefixes: [],
+  config:   {},
+};
 
 // ─── Auth Stack ───────────────────────────────────────────────
 function AuthStack() {
@@ -162,6 +167,8 @@ export default function App() {
   const { isLoading, isAuthenticated, isFarmer, loadFromStorage } = useAuth();
 
   useEffect(() => {
+    fetch('https://fermaconnect-api.onrender.com/health')
+      .catch(() => {});
     loadFromStorage();
   }, []);
 

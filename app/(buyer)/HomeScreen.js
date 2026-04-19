@@ -17,7 +17,8 @@ export default function HomeScreen({ navigation }) {
   const [page,        setPage]        = useState(1);
   const [hasNext,     setHasNext]     = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-
+  const [error, setError] = useState(null);
+  
   const fetchProducts = useCallback(async (
     pageNum = 1,
     searchVal = search,
@@ -39,6 +40,7 @@ export default function HomeScreen({ navigation }) {
       setPage(pageNum);
     } catch (error) {
       console.error('Failed to fetch products:', error);
+      setError('Could not load products. Pull down to try again.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -129,7 +131,30 @@ export default function HomeScreen({ navigation }) {
       {loading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#52B788" />
+          <Text className="text-muted text-sm mt-4">
+            Loading fresh products...
+          </Text>
         </View>
+        ) : error ? (
+          <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-5xl mb-4">🌿</Text>
+          <Text className="text-dark font-bold text-lg mb-2 text-center">
+            Could not connect
+          </Text>
+        <Text className="text-muted text-sm text-center mb-6">
+        {error}
+    </Text>
+    <TouchableOpacity
+      className="bg-secondary rounded-xl px-6 py-3"
+      onPress={() => {
+        setError(null);
+        setLoading(true);
+        fetchProducts(1, search, category, false);
+      }}
+    >
+      <Text className="text-white font-bold">Try again</Text>
+    </TouchableOpacity>
+  </View>
       ) : (
         <FlatList
           data={products}

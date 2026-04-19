@@ -4,7 +4,7 @@ import {
   TouchableOpacity, ActivityIndicator,
   RefreshControl, Alert, Switch,
 } from 'react-native';
-import { productsAPI } from '../../services/api';
+import { productsAPI, farmersAPI } from '../../services/api';
 import useAuth from '../../hooks/useAuth';
 
 function ListingCard({ product, onEdit, onDelete, onToggle }) {
@@ -93,23 +93,16 @@ export default function MyListingsScreen({ navigation }) {
   }, [navigation]);
 
   const fetchProducts = async () => {
-    try {
-      const response = await productsAPI.getAll({
-        limit:     50,
-        available: 'all',
-      });
-      
-      const mine = response.data.products.filter(
-        p => p.farmer?.id === user?.id
-      );
-      setProducts(mine);
-    } catch (error) {
-      console.error('Failed to fetch listings:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
+  try {
+    const response = await farmersAPI.getProducts(user?.id);
+    setProducts(response.data.products);
+  } catch (error) {
+    console.error('Failed to fetch listings:', error);
+  } finally {
+    setLoading(false);
+    setRefreshing(false);
+  }
+};
 
   const handleToggle = async (product) => {
     try {
