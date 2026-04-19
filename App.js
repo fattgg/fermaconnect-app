@@ -27,6 +27,7 @@ import EditProductScreen     from './app/(farmer)/EditProductScreen';
 import IncomingOrdersScreen  from './app/(farmer)/IncomingOrdersScreen';
 
 import { initI18n } from './i18n';
+import SettingsScreen from './components/ui/SettingsScreen';
 
 const Stack       = createNativeStackNavigator();
 const BuyerStack  = createNativeStackNavigator();
@@ -86,6 +87,16 @@ function BuyerTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({ color }) => (
+      <Text style={{ fontSize: 20, color }}>⚙️</Text>
+    ),
+  }}
+/>
     </Tab.Navigator>
   );
 }
@@ -149,6 +160,16 @@ function FarmerTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: 'Settings',
+        tabBarIcon: ({ color }) => (
+      <Text style={{ fontSize: 20, color }}>⚙️</Text>
+    ),
+  }}
+/>
     </Tab.Navigator>
   );
 }
@@ -172,7 +193,7 @@ useEffect(() => {
   const initialize = async () => {
     await initI18n();
     fetch('https://fermaconnect-api.onrender.com/health').catch(() => {});
-    loadFromStorage();
+    await loadFromStorage();
   };
   initialize();
 }, []);
