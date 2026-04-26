@@ -29,7 +29,6 @@ import IncomingOrdersScreen from "./app/(farmer)/IncomingOrdersScreen";
 
 import { initI18n } from "./i18n";
 import SettingsScreen from "./components/ui/SettingsScreen";
-import { ErrorBoundary } from "react";
 import useLanguageStore from "./store/languageStore";
 
 const Stack = createNativeStackNavigator();
