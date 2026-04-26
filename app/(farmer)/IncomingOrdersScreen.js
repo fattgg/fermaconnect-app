@@ -1,25 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
-  View, Text, FlatList, TouchableOpacity,
-  ActivityIndicator, RefreshControl, Alert, Image,
-} from 'react-native';
-import { ordersAPI } from '../../services/api';
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '../../constants';
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+  Alert,
+  Image,
+} from "react-native";
+import { useTranslation } from "react-i18next";
+import { ordersAPI } from "../../services/api";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../constants";
 
 function IncomingOrderCard({ order, onUpdateStatus }) {
-  const product    = order.product;
-  const buyer      = order.buyer;
-  const hasPhoto   = product?.photo_urls && product.photo_urls.length > 0;
-  const statusColor = ORDER_STATUS_COLORS[order.status] || '#6C757D';
-  const statusLabel = ORDER_STATUS_LABELS[order.status] || order.status;
+  const { t } = useTranslation();
 
-  const isPending  = order.status === 'pending';
-  const isAccepted = order.status === 'accepted';
+  const product = order.product;
+  const buyer = order.buyer;
+  const hasPhoto = product?.photo_urls && product.photo_urls.length > 0;
+  const statusColor = ORDER_STATUS_COLORS[order.status] || "#6C757D";
+  const statusLabel = t(`common.${order.status}`);
+  const isPending = order.status === "pending";
+  const isAccepted = order.status === "accepted";
 
   return (
     <View
       className="bg-white rounded-2xl mb-4 overflow-hidden"
-      style={{ elevation: 2, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8 }}
+      style={{
+        elevation: 2,
+        shadowColor: "#000",
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+      }}
     >
       <View className="flex-row">
         {hasPhoto ? (
@@ -33,22 +46,21 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
             <Text className="text-4xl">🌿</Text>
           </View>
         )}
+
         <View className="flex-1 p-3 justify-between">
           <View>
             <Text className="text-dark font-bold text-base" numberOfLines={1}>
               {product?.name}
             </Text>
             <Text className="text-dark text-sm mt-1">
-              {order.quantity} {product?.unit} ·{' '}
-              <Text className="text-primary font-bold">
-                €{(parseFloat(product?.price) * order.quantity).toFixed(2)}
-              </Text>
+              {order.quantity} {product?.unit} · €
+              {(parseFloat(product?.price) * order.quantity).toFixed(2)}
             </Text>
           </View>
           <View className="flex-row justify-between items-center mt-2">
             <View
               className="px-3 py-1 rounded-full"
-              style={{ backgroundColor: statusColor + '20' }}
+              style={{ backgroundColor: statusColor + "20" }}
             >
               <Text
                 className="text-xs font-bold"
@@ -66,7 +78,7 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
 
       <View className="px-4 py-3 border-t border-gray-100">
         <Text className="text-muted text-xs font-bold uppercase mb-2">
-          Buyer
+          {t("incomingOrders.buyerSection")}
         </Text>
         <View className="flex-row items-center gap-x-3">
           <View className="w-8 h-8 rounded-full bg-secondary/20 items-center justify-center">
@@ -75,9 +87,7 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
             </Text>
           </View>
           <View>
-            <Text className="text-dark font-bold text-sm">
-              {buyer?.name}
-            </Text>
+            <Text className="text-dark font-bold text-sm">{buyer?.name}</Text>
             <Text className="text-secondary text-sm">
               📞 {order.contact_info}
             </Text>
@@ -86,7 +96,9 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
 
         {order.note && (
           <View className="mt-2 bg-gray-50 rounded-xl px-3 py-2">
-            <Text className="text-muted text-xs font-bold mb-1">Note:</Text>
+            <Text className="text-muted text-xs font-bold mb-1">
+              {t("incomingOrders.noteSection")}
+            </Text>
             <Text className="text-dark text-sm">{order.note}</Text>
           </View>
         )}
@@ -96,16 +108,20 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
         <View className="flex-row border-t border-gray-100">
           <TouchableOpacity
             className="flex-1 py-3 items-center bg-red-50"
-            onPress={() => onUpdateStatus(order, 'rejected')}
+            onPress={() => onUpdateStatus(order, "rejected")}
           >
-            <Text className="text-red-500 font-bold text-sm">✕ Reject</Text>
+            <Text className="text-red-500 font-bold text-sm">
+              {t("incomingOrders.reject")}
+            </Text>
           </TouchableOpacity>
           <View className="w-px bg-gray-100" />
           <TouchableOpacity
             className="flex-1 py-3 items-center bg-green-50"
-            onPress={() => onUpdateStatus(order, 'accepted')}
+            onPress={() => onUpdateStatus(order, "accepted")}
           >
-            <Text className="text-primary font-bold text-sm">✓ Accept</Text>
+            <Text className="text-primary font-bold text-sm">
+              {t("incomingOrders.accept")}
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -114,10 +130,10 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
         <View className="border-t border-gray-100">
           <TouchableOpacity
             className="py-3 items-center bg-primary/10"
-            onPress={() => onUpdateStatus(order, 'completed')}
+            onPress={() => onUpdateStatus(order, "completed")}
           >
             <Text className="text-primary font-bold text-sm">
-              ✓ Mark as Completed
+              {t("incomingOrders.markCompleted")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -127,12 +143,14 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
 }
 
 export default function IncomingOrdersScreen({ navigation }) {
-  const [orders,     setOrders]     = useState([]);
-  const [loading,    setLoading]    = useState(true);
+  const { t } = useTranslation();
+
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', fetchOrders);
+    const unsubscribe = navigation.addListener("focus", fetchOrders);
     return unsubscribe;
   }, [navigation]);
 
@@ -141,7 +159,7 @@ export default function IncomingOrdersScreen({ navigation }) {
       const response = await ordersAPI.getAll();
       setOrders(response.data.orders);
     } catch (error) {
-      console.error('Failed to fetch orders:', error);
+      console.error("Failed to fetch orders:", error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -150,34 +168,32 @@ export default function IncomingOrdersScreen({ navigation }) {
 
   const handleUpdateStatus = (order, status) => {
     const messages = {
-      accepted:  `Accept order for ${order.product?.name}?`,
-      rejected:  `Reject order for ${order.product?.name}?`,
-      completed: `Mark this order as completed?`,
+      accepted: t("incomingOrders.acceptConfirm", {
+        product: order.product?.name,
+      }),
+      rejected: t("incomingOrders.rejectConfirm", {
+        product: order.product?.name,
+      }),
+      completed: t("incomingOrders.completeConfirm"),
     };
 
-    Alert.alert(
-      'Update order',
-      messages[status],
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Confirm',
-          style: status === 'rejected' ? 'destructive' : 'default',
-          onPress: async () => {
-            try {
-              await ordersAPI.updateStatus(order.id, status);
-              setOrders(prev =>
-                prev.map(o =>
-                  o.id === order.id ? { ...o, status } : o
-                )
-              );
-            } catch (error) {
-              Alert.alert('Error', 'Failed to update order status');
-            }
-          },
+    Alert.alert(t("incomingOrders.updateOrder"), messages[status], [
+      { text: t("common.cancel"), style: "cancel" },
+      {
+        text: t("common.confirm"),
+        style: status === "rejected" ? "destructive" : "default",
+        onPress: async () => {
+          try {
+            await ordersAPI.updateStatus(order.id, status);
+            setOrders((prev) =>
+              prev.map((o) => (o.id === order.id ? { ...o, status } : o)),
+            );
+          } catch (error) {
+            Alert.alert(t("common.error"), t("incomingOrders.updateFailed"));
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleRefresh = () => {
@@ -185,9 +201,9 @@ export default function IncomingOrdersScreen({ navigation }) {
     fetchOrders();
   };
 
-  const pendingOrders  = orders.filter(o => o.status === 'pending');
-  const otherOrders    = orders.filter(o => o.status !== 'pending');
-  const sortedOrders   = [...pendingOrders, ...otherOrders];
+  const pendingOrders = orders.filter((o) => o.status === "pending");
+  const otherOrders = orders.filter((o) => o.status !== "pending");
+  const sortedOrders = [...pendingOrders, ...otherOrders];
 
   if (loading) {
     return (
@@ -199,15 +215,16 @@ export default function IncomingOrdersScreen({ navigation }) {
 
   return (
     <View className="flex-1 bg-light">
-
       <View className="bg-white px-6 pt-14 pb-4">
-        <Text className="text-2xl font-bold text-dark">Incoming Orders</Text>
+        <Text className="text-2xl font-bold text-dark">
+          {t("incomingOrders.title")}
+        </Text>
         <View className="flex-row gap-x-4 mt-2">
           <Text className="text-muted text-sm">
-            <Text className="text-accent font-bold">{pendingOrders.length}</Text> pending
+            {pendingOrders.length} {t("common.pending").toLowerCase()}
           </Text>
           <Text className="text-muted text-sm">
-            <Text className="text-dark font-bold">{orders.length}</Text> total
+            {orders.length} {t("common.all").toLowerCase()}
           </Text>
         </View>
       </View>
@@ -216,10 +233,7 @@ export default function IncomingOrdersScreen({ navigation }) {
         data={sortedOrders}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <IncomingOrderCard
-            order={item}
-            onUpdateStatus={handleUpdateStatus}
-          />
+          <IncomingOrderCard order={item} onUpdateStatus={handleUpdateStatus} />
         )}
         contentContainerStyle={{ padding: 16 }}
         refreshControl={
@@ -233,10 +247,10 @@ export default function IncomingOrdersScreen({ navigation }) {
           <View className="items-center justify-center py-20">
             <Text className="text-5xl mb-4">📬</Text>
             <Text className="text-dark font-bold text-lg mb-2">
-              No orders yet
+              {t("incomingOrders.noOrders")}
             </Text>
             <Text className="text-muted text-sm text-center">
-              Orders from buyers will appear here
+              {t("incomingOrders.noOrdersDesc")}
             </Text>
           </View>
         }

@@ -26,7 +26,15 @@
     "rejected": "Abgelehnt",
     "completed": "Abgeschlossen",
     "submit": "Absenden",
-    "sending": "Wird gesendet..."
+    "sending": "Wird gesendet...",
+    "from": "Von",
+    "memberSince": "Mitglied seit {{year}}",
+    "account": "Konto",
+    "name": "Name",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "municipality": "Gemeinde",
+    "max": "max" 
   },
   "auth": {
     "welcome": "Willkommen bei FermaConnect",
@@ -59,7 +67,10 @@
     "registerFailed": "Registrierung fehlgeschlagen",
     "fillAllFields": "Bitte füllen Sie alle Felder aus",
     "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein",
-    "nameRequired": "Name, E-Mail und Passwort sind erforderlich"
+    "nameRequired": "Name, E-Mail und Passwort sind erforderlich",
+    "emailPlaceholder": "email@beispiel.com",
+    "namePlaceholder": "Ihr vollständiger Name",
+    "phonePlaceholder": "+383 44 XXX XXX"
   },
   "home": {
     "title": "Frische Produkte",
@@ -69,7 +80,8 @@
     "noProductsDesc": "Versuchen Sie eine andere Suche oder Kategorie",
     "loadingProducts": "Frische Produkte werden geladen...",
     "connectionError": "Verbindung fehlgeschlagen",
-    "connectionErrorDesc": "Produkte konnten nicht geladen werden. Nach unten ziehen, um es erneut zu versuchen."
+    "connectionErrorDesc": "Produkte konnten nicht geladen werden. Nach unten ziehen, um es erneut zu versuchen.",
+    "browseTab": "Durchsuchen"
   },
   "categories": {
     "all": "Alle",
@@ -131,6 +143,8 @@
   },
   "dashboard": {
     "greeting": "Guten Morgen,",
+    "greetingAfternoon": "Guten Tag,",
+    "greetingEvening": "Guten Abend",
     "totalListings": "Angebote gesamt",
     "availableNow": "Jetzt verfügbar",
     "pendingOrders": "Ausstehende Bestellungen",
@@ -149,7 +163,8 @@
     "rainy": "Regnerisch",
     "snow": "Schnee",
     "rainShowers": "Regenschauer",
-    "thunderstorm": "Gewitter"
+    "thunderstorm": "Gewitter",
+    "title": "Dashboard"
   },
   "listings": {
     "title": "Meine Angebote",
@@ -203,7 +218,8 @@
     "acceptConfirm": "Bestellung für {{product}} annehmen?",
     "rejectConfirm": "Bestellung für {{product}} ablehnen?",
     "completeConfirm": "Diese Bestellung als abgeschlossen markieren?",
-    "updateFailed": "Aktualisierung des Bestellstatus fehlgeschlagen"
+    "updateFailed": "Aktualisierung des Bestellstatus fehlgeschlagen",
+    "tabLabel": "Bestellungen"
   },
   "settings": {
     "title": "Einstellungen",
@@ -213,5 +229,13 @@
     "albanian": "Albanisch (Shqip)",
     "german": "Deutsch",
     "languageChanged": "Sprache erfolgreich geändert"
-  }
+  },
+  "units": {
+  "kg": "kg",
+  "piece": "Stück",
+  "bundle": "Bündel",
+  "litre": "Liter",
+  "gram": "Gramm",
+  "dozen": "Dutzend"
+}
 }

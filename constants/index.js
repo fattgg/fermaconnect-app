@@ -1,16 +1,16 @@
 export const API_URL = 'https://fermaconnect-api.onrender.com/api';
 
 export const CATEGORIES = [
-  { label: 'All',        value: ''           },
-  { label: 'Vegetables', value: 'vegetables' },
-  { label: 'Fruits',     value: 'fruits'     },
-  { label: 'Dairy',      value: 'dairy'      },
-  { label: 'Meat',       value: 'meat'       },
-  { label: 'Honey',      value: 'honey'      },
-  { label: 'Eggs',       value: 'eggs'       },
-  { label: 'Grains',     value: 'grains'     },
-  { label: 'Herbs',      value: 'herbs'      },
-  { label: 'Other',      value: 'other'      },
+  { label: 'all',        value: ''           },
+  { label: 'vegetables', value: 'vegetables' },
+  { label: 'fruits',     value: 'fruits'     },
+  { label: 'dairy',      value: 'dairy'      },
+  { label: 'meat',       value: 'meat'       },
+  { label: 'honey',      value: 'honey'      },
+  { label: 'eggs',       value: 'eggs'       },
+  { label: 'grains',     value: 'grains'     },
+  { label: 'herbs',      value: 'herbs'      },
+  { label: 'other',      value: 'other'      },
 ];
 
 export const MUNICIPALITIES = [

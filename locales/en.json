@@ -26,7 +26,15 @@
     "rejected": "Rejected",
     "completed": "Completed",
     "submit": "Submit",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "from": "From",
+    "memberSince": "Member since {{year}}",
+    "account": "Account",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "municipality": "Municipality",
+    "max": "max"
   },
   "auth": {
     "welcome": "Welcome to FermaConnect",
@@ -59,7 +67,10 @@
     "registerFailed": "Registration failed",
     "fillAllFields": "Please fill in all fields",
     "passwordTooShort": "Password must be at least 6 characters",
-    "nameRequired": "Name, email and password are required"
+    "nameRequired": "Name, email and password are required",
+    "emailPlaceholder": "email@example.com",
+    "namePlaceholder": "Your full name",
+    "phonePlaceholder": "+383 44 XXX XXX"
   },
   "home": {
     "title": "Fresh Products",
@@ -69,7 +80,8 @@
     "noProductsDesc": "Try a different search or category",
     "loadingProducts": "Loading fresh products...",
     "connectionError": "Could not connect",
-    "connectionErrorDesc": "Could not load products. Pull down to try again."
+    "connectionErrorDesc": "Could not load products. Pull down to try again.",
+    "browseTab": "Browse"
   },
   "categories": {
     "all": "All",
@@ -131,6 +143,8 @@
   },
   "dashboard": {
     "greeting": "Good morning,",
+    "greetingAfternoon": "Good afternoon,",
+    "greetingEvening": "Good evening",
     "totalListings": "Total listings",
     "availableNow": "Available now",
     "pendingOrders": "Pending orders",
@@ -149,7 +163,8 @@
     "rainy": "Rainy",
     "snow": "Snow",
     "rainShowers": "Rain showers",
-    "thunderstorm": "Thunderstorm"
+    "thunderstorm": "Thunderstorm",
+    "title": "Dashboard"
   },
   "listings": {
     "title": "My Listings",
@@ -203,7 +218,8 @@
     "acceptConfirm": "Accept order for {{product}}?",
     "rejectConfirm": "Reject order for {{product}}?",
     "completeConfirm": "Mark this order as completed?",
-    "updateFailed": "Failed to update order status"
+    "updateFailed": "Failed to update order status",
+    "tabLabel": "Orders"
   },
   "settings": {
     "title": "Settings",
@@ -213,5 +229,13 @@
     "albanian": "Albanian (Shqip)",
     "german": "German (Deutsch)",
     "languageChanged": "Language changed successfully"
-  }
+  },
+  "units": {
+  "kg": "kg",
+  "piece": "piece",
+  "bundle": "bundle",
+  "litre": "litre",
+  "gram": "gram",
+  "dozen": "dozen"
+}
 }

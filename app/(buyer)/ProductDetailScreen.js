@@ -1,16 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
-  View, Text, Image, ScrollView,
-  TouchableOpacity, ActivityIndicator,
-  Dimensions, Alert,
-} from 'react-native';
-import { productsAPI } from '../../services/api';
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  Dimensions,
+  Alert,
+} from "react-native";
+import { useTranslation } from "react-i18next";
+import { productsAPI } from "../../services/api";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 export default function ProductDetailScreen({ navigation, route }) {
   const { productId } = route.params;
-
+  const { t } = useTranslation();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -24,7 +30,7 @@ export default function ProductDetailScreen({ navigation, route }) {
       const response = await productsAPI.getById(productId);
       setProduct(response.data);
     } catch (error) {
-      Alert.alert('Error', 'Failed to load product');
+      Alert.alert("Error", "Failed to load product");
       navigation.goBack();
     } finally {
       setLoading(false);
@@ -46,7 +52,6 @@ export default function ProductDetailScreen({ navigation, route }) {
   return (
     <View className="flex-1 bg-light">
       <ScrollView showsVerticalScrollIndicator={false}>
-
         {/* Photo carousel */}
         {hasPhotos ? (
           <View>
@@ -77,7 +82,7 @@ export default function ProductDetailScreen({ navigation, route }) {
                   <View
                     key={i}
                     className={`w-2 h-2 rounded-full ${
-                      i === photoIndex ? 'bg-secondary' : 'bg-gray-300'
+                      i === photoIndex ? "bg-secondary" : "bg-gray-300"
                     }`}
                   />
                 ))}
@@ -96,7 +101,12 @@ export default function ProductDetailScreen({ navigation, route }) {
         {/* Back button */}
         <TouchableOpacity
           className="absolute top-12 left-4 w-10 h-10 bg-white rounded-full items-center justify-center"
-          style={{ elevation: 3, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4 }}
+          style={{
+            elevation: 3,
+            shadowColor: "#000",
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+          }}
           onPress={() => navigation.goBack()}
         >
           <Text className="text-dark text-lg">←</Text>
@@ -104,38 +114,49 @@ export default function ProductDetailScreen({ navigation, route }) {
 
         {/* Content */}
         <View className="px-6 pt-6 pb-10">
-
           {/* Name + availability */}
           <View className="flex-row justify-between items-start mb-2">
             <Text className="text-dark font-bold text-2xl flex-1 mr-3">
               {product.name}
             </Text>
-            <View className={`px-3 py-1 rounded-full ${
-              product.available ? 'bg-green-100' : 'bg-red-100'
-            }`}>
-              <Text className={`text-xs font-bold ${
-                product.available ? 'text-green-600' : 'text-red-500'
-              }`}>
-                {product.available ? 'Available' : 'Unavailable'}
+            <View
+              className={`px-3 py-1 rounded-full ${
+                product.available ? "bg-green-100" : "bg-red-100"
+              }`}
+            >
+              <Text
+                className={`text-xs font-bold ${
+                  product.available ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                {product.available
+                  ? t("common.available")
+                  : t("common.unavailable")}
               </Text>
             </View>
           </View>
 
           {/* Category */}
           <Text className="text-muted text-sm capitalize mb-4">
-            {product.category}
+            {t(`categories.${product.category}`)}
           </Text>
 
           {/* Price */}
           <View className="bg-secondary/10 rounded-2xl p-4 mb-4 flex-row justify-between items-center">
             <View>
-              <Text className="text-muted text-sm mb-1">Price per {product.unit}</Text>
+              <Text className="text-muted text-sm mb-1">
+                {t("product.pricePerUnit", {
+                  unit: t(`units.${product.unit}`),
+                })}
+              </Text>
               <Text className="text-secondary font-bold text-3xl">
                 €{parseFloat(product.price).toFixed(2)}
               </Text>
             </View>
             <View className="items-end">
-              <Text className="text-muted text-sm mb-1">In stock</Text>
+              <Text className="text-muted text-sm mb-1">
+                {t("product.inStock")}
+              </Text>
               <Text className="text-dark font-bold text-xl">
                 {product.quantity} {product.unit}
               </Text>
@@ -146,7 +167,7 @@ export default function ProductDetailScreen({ navigation, route }) {
           {product.description && (
             <View className="mb-6">
               <Text className="text-dark font-bold text-base mb-2">
-                About this product
+                {t("product.aboutProduct")}
               </Text>
               <Text className="text-muted text-base leading-6">
                 {product.description}
@@ -157,10 +178,17 @@ export default function ProductDetailScreen({ navigation, route }) {
           {/* Farmer card */}
           <TouchableOpacity
             className="bg-white rounded-2xl p-4 mb-6 flex-row items-center"
-            style={{ elevation: 2, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8 }}
-            onPress={() => navigation.navigate('FarmerProfile', {
-              farmerId: product.farmer.id
-            })}
+            style={{
+              elevation: 2,
+              shadowColor: "#000",
+              shadowOpacity: 0.06,
+              shadowRadius: 8,
+            }}
+            onPress={() =>
+              navigation.navigate("FarmerProfile", {
+                farmerId: product.farmer.id,
+              })
+            }
           >
             <View className="w-14 h-14 rounded-full bg-primary items-center justify-center mr-4">
               <Text className="text-white text-xl font-bold">
@@ -174,7 +202,7 @@ export default function ProductDetailScreen({ navigation, route }) {
                 </Text>
               </View>
               <Text className="text-muted text-sm mt-1">
-                📍 {product.farmer.municipality || 'Kosovo'}
+                📍 {product.farmer.municipality || "Kosovo"}
               </Text>
               {product.farmer.phone && (
                 <Text className="text-muted text-sm">
@@ -184,33 +212,31 @@ export default function ProductDetailScreen({ navigation, route }) {
             </View>
             <Text className="text-muted text-lg">→</Text>
           </TouchableOpacity>
-
         </View>
       </ScrollView>
 
       {/* Order button — fixed at bottom */}
       <View
         className="bg-white px-6 py-4"
-        style={{ borderTopWidth: 1, borderTopColor: '#E9ECEF' }}
+        style={{ borderTopWidth: 1, borderTopColor: "#E9ECEF" }}
       >
         {product.available ? (
           <TouchableOpacity
             className="bg-secondary rounded-xl py-4 items-center"
-            onPress={() => navigation.navigate('OrderRequest', { product })}
+            onPress={() => navigation.navigate("OrderRequest", { product })}
           >
             <Text className="text-white font-bold text-base">
-              Request Order
+              {t("product.requestOrder")}
             </Text>
           </TouchableOpacity>
         ) : (
           <View className="bg-gray-200 rounded-xl py-4 items-center">
             <Text className="text-muted font-bold text-base">
-              Currently Unavailable
+              {t("product.currentlyUnavailable")}
             </Text>
           </View>
         )}
       </View>
-
     </View>
   );
 }

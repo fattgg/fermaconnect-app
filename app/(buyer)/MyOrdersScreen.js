@@ -1,27 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
-  View, Text, FlatList, TouchableOpacity,
-  ActivityIndicator, RefreshControl, Alert, Image,
-} from 'react-native';
-import { ordersAPI } from '../../services/api';
-import useAuth from '../../hooks/useAuth';
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '../../constants';
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+  Alert,
+  Image,
+} from "react-native";
+import { ordersAPI } from "../../services/api";
+import useAuth from "../../hooks/useAuth";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../constants";
+import { useTranslation } from "react-i18next";
 
 function OrderCard({ order, onPress }) {
+  const { t } = useTranslation();
   const product = order.product;
   const hasPhoto = product?.photo_urls && product.photo_urls.length > 0;
-  const statusColor = ORDER_STATUS_COLORS[order.status] || '#6C757D';
-  const statusLabel = ORDER_STATUS_LABELS[order.status] || order.status;
+  const statusColor = ORDER_STATUS_COLORS[order.status] || "#6C757D";
+  const statusLabel = t(`common.${order.status}`);
 
   return (
     <TouchableOpacity
       className="bg-white rounded-2xl mb-4 overflow-hidden"
-      style={{ elevation: 2, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8 }}
+      style={{
+        elevation: 2,
+        shadowColor: "#000",
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+      }}
       onPress={onPress}
       activeOpacity={0.85}
     >
       <View className="flex-row">
-
         {hasPhoto ? (
           <Image
             source={{ uri: product.photo_urls[0] }}
@@ -39,11 +51,9 @@ function OrderCard({ order, onPress }) {
             <Text className="text-dark font-bold text-base" numberOfLines={1}>
               {product?.name}
             </Text>
-            <Text className="text-muted text-xs mt-1">
-              From {product?.farmer_name}
-            </Text>
+            <Text className="text-muted text-xs mt-1">{t("common.from")}</Text>
             <Text className="text-dark text-sm mt-1">
-              {order.quantity} {product?.unit} ·{' '}
+              {order.quantity} {product?.unit} ·{" "}
               <Text className="text-secondary font-bold">
                 €{(parseFloat(product?.price) * order.quantity).toFixed(2)}
               </Text>
@@ -53,7 +63,7 @@ function OrderCard({ order, onPress }) {
           <View className="flex-row justify-between items-center mt-2">
             <View
               className="px-3 py-1 rounded-full"
-              style={{ backgroundColor: statusColor + '20' }}
+              style={{ backgroundColor: statusColor + "20" }}
             >
               <Text
                 className="text-xs font-bold"
@@ -72,7 +82,7 @@ function OrderCard({ order, onPress }) {
       {order.note && (
         <View className="px-4 py-2 border-t border-gray-100">
           <Text className="text-muted text-xs" numberOfLines={1}>
-            Note: {order.note}
+            {t("incomingOrders.noteSection")}
           </Text>
         </View>
       )}
@@ -81,14 +91,15 @@ function OrderCard({ order, onPress }) {
 }
 
 export default function MyOrdersScreen({ navigation }) {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
 
-  const [orders,     setOrders]     = useState([]);
-  const [loading,    setLoading]    = useState(true);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', fetchOrders);
+    const unsubscribe = navigation.addListener("focus", fetchOrders);
     return unsubscribe;
   }, [navigation]);
 
@@ -97,7 +108,7 @@ export default function MyOrdersScreen({ navigation }) {
       const response = await ordersAPI.getAll();
       setOrders(response.data.orders);
     } catch (error) {
-      console.error('Failed to fetch orders:', error);
+      console.error("Failed to fetch orders:", error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -119,11 +130,12 @@ export default function MyOrdersScreen({ navigation }) {
 
   return (
     <View className="flex-1 bg-light">
-
       <View className="bg-white px-6 pt-14 pb-4">
-        <Text className="text-2xl font-bold text-dark">My Orders</Text>
+        <Text className="text-2xl font-bold text-dark">
+          {t("myOrders.title")}
+        </Text>
         <Text className="text-muted text-sm mt-1">
-          {orders.length} order{orders.length !== 1 ? 's' : ''} placed
+          {t("myOrders.subtitle", { count: orders.length })}
         </Text>
       </View>
 
@@ -134,7 +146,7 @@ export default function MyOrdersScreen({ navigation }) {
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: ORDER_STATUS_COLORS[key] }}
             />
-            <Text className="text-muted text-xs">{label}</Text>
+            <Text className="text-muted text-xs">{t(`common.${key}`)}</Text>
           </View>
         ))}
       </View>
@@ -142,12 +154,7 @@ export default function MyOrdersScreen({ navigation }) {
       <FlatList
         data={orders}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <OrderCard
-            order={item}
-            onPress={() => {}}
-          />
-        )}
+        renderItem={({ item }) => <OrderCard order={item} onPress={() => {}} />}
         contentContainerStyle={{ padding: 16 }}
         refreshControl={
           <RefreshControl
@@ -160,16 +167,18 @@ export default function MyOrdersScreen({ navigation }) {
           <View className="items-center justify-center py-20">
             <Text className="text-5xl mb-4">📦</Text>
             <Text className="text-dark font-bold text-lg mb-2">
-              No orders yet
+              {t("myOrders.noOrders")}
             </Text>
             <Text className="text-muted text-sm text-center mb-6">
-              Browse products and place your first order
+              {t("myOrders.noOrdersDesc")}
             </Text>
             <TouchableOpacity
               className="bg-secondary rounded-xl px-6 py-3"
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate("Home")}
             >
-              <Text className="text-white font-bold">Browse products</Text>
+              <Text className="text-white font-bold">
+                {t("myOrders.browseProducts")}
+              </Text>
             </TouchableOpacity>
           </View>
         }
@@ -180,7 +189,9 @@ export default function MyOrdersScreen({ navigation }) {
                 className="border border-red-200 rounded-2xl py-4 items-center"
                 onPress={logout}
               >
-                <Text className="text-red-500 font-bold">Sign out</Text>
+                <Text className="text-red-500 font-bold">
+                  {t("common.logout")}
+                </Text>
               </TouchableOpacity>
             </View>
           ) : null

@@ -1,91 +1,107 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
-  View, Text, TextInput, TouchableOpacity,
-  ScrollView, ActivityIndicator, Alert, Image,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { productsAPI } from '../../services/api';
-import { CATEGORIES } from '../../constants';
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+  Image,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { productsAPI } from "../../services/api";
+import { CATEGORIES } from "../../constants";
+import { useTranslation } from "react-i18next";
 
-const UNITS = ['kg', 'piece', 'bundle', 'litre', 'gram', 'dozen'];
+const UNITS = ["kg", "piece", "bundle", "litre", "gram", "dozen"];
 
 export default function EditProductScreen({ navigation, route }) {
   const { product } = route.params;
 
-  const [name,        setName]        = useState(product.name);
-  const [category,    setCategory]    = useState(product.category);
-  const [description, setDescription] = useState(product.description || '');
-  const [price,       setPrice]       = useState(String(product.price));
-  const [unit,        setUnit]        = useState(product.unit);
-  const [quantity,    setQuantity]    = useState(String(product.quantity));
-  const [existingPhotos, setExistingPhotos] = useState(product.photo_urls || []);
-  const [newPhotos,   setNewPhotos]   = useState([]);
-  const [loading,     setLoading]     = useState(false);
-
+  const [name, setName] = useState(product.name);
+  const [category, setCategory] = useState(product.category);
+  const [description, setDescription] = useState(product.description || "");
+  const [price, setPrice] = useState(String(product.price));
+  const [unit, setUnit] = useState(product.unit);
+  const [quantity, setQuantity] = useState(String(product.quantity));
+  const [existingPhotos, setExistingPhotos] = useState(
+    product.photo_urls || [],
+  );
+  const [newPhotos, setNewPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const [showCategories, setShowCategories] = useState(false);
-  const [showUnits,      setShowUnits]      = useState(false);
+  const [showUnits, setShowUnits] = useState(false);
 
   const pickPhoto = async () => {
     if (existingPhotos.length + newPhotos.length >= 3) {
-      Alert.alert('Limit reached', 'You can have maximum 3 photos');
+      Alert.alert("Limit reached", "You can have maximum 3 photos");
       return;
     }
 
     try {
-      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const permission =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permission.granted) {
-        Alert.alert('Permission required', 'Please allow access to your photos');
+        Alert.alert(
+          "Permission required",
+          "Please allow access to your photos",
+        );
         return;
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
+        mediaTypes: ["images"],
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.8,
       });
 
       if (!result.canceled && result.assets?.length > 0) {
-        setNewPhotos(prev => [...prev, result.assets[0]]);
+        setNewPhotos((prev) => [...prev, result.assets[0]]);
       }
     } catch (error) {
-      Alert.alert('Error', 'Could not open photo library');
+      Alert.alert("Error", "Could not open photo library");
     }
   };
 
   const removeExistingPhoto = (index) => {
-    setExistingPhotos(prev => prev.filter((_, i) => i !== index));
+    const { t } = useTranslation();
+    setExistingPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
   const removeNewPhoto = (index) => {
-    setNewPhotos(prev => prev.filter((_, i) => i !== index));
+    const { t } = useTranslation();
+    setNewPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async () => {
+    const { t } = useTranslation();
     if (!name || !category || !price || !unit || !quantity) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert(t("common.error"), t("addProduct.fillRequired"));
       return;
     }
 
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('name',        name);
-      formData.append('category',    category);
-      formData.append('description', description);
-      formData.append('price',    parseFloat(price)  || 0);
-      formData.append('unit',        unit);
-      formData.append('quantity', parseInt(quantity) || 0);
+      formData.append("name", name);
+      formData.append("category", category);
+      formData.append("description", description);
+      formData.append("price", parseFloat(price) || 0);
+      formData.append("unit", unit);
+      formData.append("quantity", parseInt(quantity) || 0);
 
-      existingPhotos.forEach(url => {
-        formData.append('existing_photos', url);
+      existingPhotos.forEach((url) => {
+        formData.append("existing_photos", url);
       });
 
       newPhotos.forEach((photo, index) => {
-        const filename  = photo.uri.split('/').pop();
-        const extension = filename.split('.').pop();
-        formData.append('photos', {
-          uri:  photo.uri,
+        const filename = photo.uri.split("/").pop();
+        const extension = filename.split(".").pop();
+        formData.append("photos", {
+          uri: photo.uri,
           name: `photo_${index}.${extension}`,
           type: `image/${extension}`,
         });
@@ -93,16 +109,15 @@ export default function EditProductScreen({ navigation, route }) {
 
       await productsAPI.update(product.id, formData);
 
-      Alert.alert(
-        'Success',
-        'Product updated successfully!',
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
-      );
+      Alert.alert(t("common.ok"), t("addProduct.successEdit"), [
+        { text: "OK", onPress: () => navigation.goBack() },
+      ]);
     } catch (error) {
-      const message = error.response?.data?.message
-        || error.response?.data?.errors?.[0]
-        || 'Failed to update product';
-      Alert.alert('Error', message);
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.errors?.[0] ||
+        "Failed to update product";
+      Alert.alert(t("common.error"), message);
     } finally {
       setLoading(false);
     }
@@ -112,26 +127,27 @@ export default function EditProductScreen({ navigation, route }) {
 
   return (
     <View className="flex-1 bg-light">
-
       <View className="bg-white px-6 pt-14 pb-4 flex-row items-center gap-x-4">
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text className="text-primary text-base font-bold">← Back</Text>
+          <Text className="text-primary text-base font-bold">
+            {t("common.back")}
+          </Text>
         </TouchableOpacity>
-        <Text className="text-xl font-bold text-dark">Edit Product</Text>
+        <Text className="text-xl font-bold text-dark">
+          {t("addProduct.editTitle")}
+        </Text>
       </View>
 
       <ScrollView
         contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
         keyboardShouldPersistTaps="handled"
       >
-
         <View className="mb-6">
           <Text className="text-dark font-bold text-base mb-3">
-            Photos
+            {t("addProduct.photos")}
             <Text className="text-muted font-normal"> ({totalPhotos}/3)</Text>
           </Text>
           <View className="flex-row gap-x-3 flex-wrap">
-
             {existingPhotos.map((url, index) => (
               <View key={`existing-${index}`} className="relative mb-3">
                 <Image
@@ -173,7 +189,9 @@ export default function EditProductScreen({ navigation, route }) {
                 onPress={pickPhoto}
               >
                 <Text className="text-3xl">📷</Text>
-                <Text className="text-muted text-xs mt-1">Add photo</Text>
+                <Text className="text-muted text-xs mt-1">
+                  {t("addProduct.addPhoto")}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -202,28 +220,30 @@ export default function EditProductScreen({ navigation, route }) {
             }}
           >
             <Text className="text-dark text-base">
-              {CATEGORIES.find(c => c.value === category)?.label || category}
+              {CATEGORIES.find((c) => c.value === category)?.label || category}
             </Text>
-            <Text className="text-muted">{showCategories ? '▲' : '▼'}</Text>
+            <Text className="text-muted">{showCategories ? "▲" : "▼"}</Text>
           </TouchableOpacity>
           {showCategories && (
             <View className="bg-white border border-gray-200 rounded-xl mt-1">
-              {CATEGORIES.filter(c => c.value !== '').map((cat) => (
+              {CATEGORIES.filter((c) => c.value !== "").map((cat) => (
                 <TouchableOpacity
                   key={cat.value}
                   className={`px-4 py-3 border-b border-gray-100 ${
-                    category === cat.value ? 'bg-primary/10' : ''
+                    category === cat.value ? "bg-primary/10" : ""
                   }`}
                   onPress={() => {
                     setCategory(cat.value);
                     setShowCategories(false);
                   }}
                 >
-                  <Text className={`text-base ${
-                    category === cat.value
-                      ? 'text-primary font-bold'
-                      : 'text-dark'
-                  }`}>
+                  <Text
+                    className={`text-base ${
+                      category === cat.value
+                        ? "text-primary font-bold"
+                        : "text-dark"
+                    }`}
+                  >
                     {cat.label}
                   </Text>
                 </TouchableOpacity>
@@ -234,14 +254,17 @@ export default function EditProductScreen({ navigation, route }) {
 
         <View className="mb-4">
           <Text className="text-dark font-bold mb-2">
-            Description
-            <Text className="text-muted font-normal"> (optional)</Text>
+            {t("addProduct.description")}
+            <Text className="text-muted font-normal">
+              {" "}
+              {`(${t("common.optional")})`}
+            </Text>
           </Text>
           <TextInput
             className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-dark text-base"
             multiline
             numberOfLines={3}
-            style={{ textAlignVertical: 'top', minHeight: 80 }}
+            style={{ textAlignVertical: "top", minHeight: 80 }}
             value={description}
             onChangeText={setDescription}
           />
@@ -271,7 +294,7 @@ export default function EditProductScreen({ navigation, route }) {
               }}
             >
               <Text className="text-dark text-base">{unit}</Text>
-              <Text className="text-muted">{showUnits ? '▲' : '▼'}</Text>
+              <Text className="text-muted">{showUnits ? "▲" : "▼"}</Text>
             </TouchableOpacity>
             {showUnits && (
               <View className="bg-white border border-gray-200 rounded-xl mt-1 absolute top-16 left-0 right-0 z-10">
@@ -279,17 +302,15 @@ export default function EditProductScreen({ navigation, route }) {
                   <TouchableOpacity
                     key={u}
                     className={`px-4 py-3 border-b border-gray-100 ${
-                      unit === u ? 'bg-primary/10' : ''
+                      unit === u ? "bg-primary/10" : ""
                     }`}
                     onPress={() => {
                       setUnit(u);
                       setShowUnits(false);
                     }}
                   >
-                    <Text className={`text-base ${
-                      unit === u ? 'text-primary font-bold' : 'text-dark'
-                    }`}>
-                      {u}
+                    <Text className="text-base text-dark">
+                      {t(`units.${u}`)}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -315,14 +336,14 @@ export default function EditProductScreen({ navigation, route }) {
           onPress={handleSubmit}
           disabled={loading}
         >
-          {loading
-            ? <ActivityIndicator color="white" />
-            : <Text className="text-white font-bold text-base">
-                Save Changes
-              </Text>
-          }
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text className="text-white font-bold text-base">
+              {t("addProduct.saveChanges")}
+            </Text>
+          )}
         </TouchableOpacity>
-
       </ScrollView>
     </View>
   );

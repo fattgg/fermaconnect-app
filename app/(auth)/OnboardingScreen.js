@@ -1,6 +1,9 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function OnboardingScreen({ navigation }) {
+  const { t } = useTranslation();
+
   return (
     <View className="flex-1 bg-light px-6 justify-between py-16">
 
@@ -12,13 +15,13 @@ export default function OnboardingScreen({ navigation }) {
           FermaConnect
         </Text>
         <Text className="text-muted text-base text-center mt-3 leading-6">
-          Connecting Kosovo farmers{'\n'}directly with buyers
+          {t('auth.tagline')}
         </Text>
       </View>
 
       <View className="gap-y-4">
         <Text className="text-dark text-lg font-bold text-center mb-2">
-          I am a...
+          {t('auth.iam')}
         </Text>
 
         <TouchableOpacity
@@ -29,9 +32,11 @@ export default function OnboardingScreen({ navigation }) {
             <Text className="text-2xl">🌱</Text>
           </View>
           <View className="flex-1">
-            <Text className="text-white text-lg font-bold">Farmer</Text>
+            <Text className="text-white text-lg font-bold">
+              {t('auth.farmer')}
+            </Text>
             <Text className="text-white/80 text-sm mt-1">
-              List your products and receive orders
+              {t('auth.farmerDesc')}
             </Text>
           </View>
           <Text className="text-white text-xl">→</Text>
@@ -45,9 +50,11 @@ export default function OnboardingScreen({ navigation }) {
             <Text className="text-2xl">🛒</Text>
           </View>
           <View className="flex-1">
-            <Text className="text-white text-lg font-bold">Buyer</Text>
+            <Text className="text-white text-lg font-bold">
+              {t('auth.buyer')}
+            </Text>
             <Text className="text-white/80 text-sm mt-1">
-              Browse fresh local products
+              {t('auth.buyerDesc')}
             </Text>
           </View>
           <Text className="text-white text-xl">→</Text>
@@ -55,7 +62,7 @@ export default function OnboardingScreen({ navigation }) {
       </View>
 
       <Text className="text-muted text-sm text-center">
-        Fresh from Kosovo farms, direct to you
+        {t('auth.footer')}
       </Text>
 
     </View>

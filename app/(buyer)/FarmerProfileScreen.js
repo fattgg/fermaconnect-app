@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
-  View, Text, ScrollView,
-  TouchableOpacity, ActivityIndicator, Alert,
-} from 'react-native';
-import { farmersAPI } from '../../services/api';
-import ProductCard from '../../components/shared/ProductCard';
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { farmersAPI } from "../../services/api";
+import { useTranslation } from "react-i18next";
+import ProductCard from "../../components/shared/ProductCard";
 
 export default function FarmerProfileScreen({ navigation, route }) {
   const { farmerId } = route.params;
-
-  const [farmer,   setFarmer]   = useState(null);
+  const { t } = useTranslation();
+  const [farmer, setFarmer] = useState(null);
   const [products, setProducts] = useState([]);
-  const [loading,  setLoading]  = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchFarmer();
@@ -26,7 +31,7 @@ export default function FarmerProfileScreen({ navigation, route }) {
       setFarmer(profileRes.data);
       setProducts(productsRes.data.products);
     } catch (error) {
-      Alert.alert('Error', 'Failed to load farmer profile');
+      Alert.alert("Error", "Failed to load farmer profile");
       navigation.goBack();
     } finally {
       setLoading(false);
@@ -46,14 +51,12 @@ export default function FarmerProfileScreen({ navigation, route }) {
   return (
     <View className="flex-1 bg-light">
       <ScrollView showsVerticalScrollIndicator={false}>
-
         <View className="bg-primary px-6 pt-14 pb-8">
-
           <TouchableOpacity
             className="mb-6"
             onPress={() => navigation.goBack()}
           >
-            <Text className="text-white text-base">← Back</Text>
+            <Text className="text-white text-base">← {t("common.back")}</Text>
           </TouchableOpacity>
 
           <View className="flex-row items-center gap-x-4">
@@ -70,7 +73,7 @@ export default function FarmerProfileScreen({ navigation, route }) {
                 {farmer.is_verified && (
                   <View className="bg-white/20 px-2 py-1 rounded-full">
                     <Text className="text-white text-xs font-bold">
-                      ✓ Verified
+                      {`✓ ${t("common.verified")}`}
                     </Text>
                   </View>
                 )}
@@ -81,11 +84,12 @@ export default function FarmerProfileScreen({ navigation, route }) {
                 </Text>
               )}
               <Text className="text-white/60 text-xs mt-1">
-                Member since {new Date(farmer.created_at).getFullYear()}
+                {t("farmer.memberSince", {
+                  year: new Date(farmer.created_at).getFullYear(),
+                })}
               </Text>
             </View>
           </View>
-
         </View>
 
         <View className="flex-row bg-white border-b border-gray-100">
@@ -93,35 +97,40 @@ export default function FarmerProfileScreen({ navigation, route }) {
             <Text className="text-primary font-bold text-xl">
               {farmer.stats.total_products}
             </Text>
-            <Text className="text-muted text-xs mt-1">Total products</Text>
+            <Text className="text-muted text-xs mt-1">
+              {t("farmer.totalProducts")}
+            </Text>
           </View>
           <View className="flex-1 items-center py-4 border-r border-gray-100">
             <Text className="text-secondary font-bold text-xl">
               {farmer.stats.available_products}
             </Text>
-            <Text className="text-muted text-xs mt-1">Available now</Text>
+            <Text className="text-muted text-xs mt-1">
+              {t("farmer.availableNow")}
+            </Text>
           </View>
           <View className="flex-1 items-center py-4">
             <Text className="text-accent font-bold text-xl">
               {farmer.stats.min_price
                 ? `€${parseFloat(farmer.stats.min_price).toFixed(2)}`
-                : '—'
-              }
+                : "—"}
             </Text>
-            <Text className="text-muted text-xs mt-1">Starting from</Text>
+            <Text className="text-muted text-xs mt-1">
+              {t("farmer.startingFrom")}
+            </Text>
           </View>
         </View>
 
         <View className="px-6 pt-6 pb-10">
           <Text className="text-dark font-bold text-lg mb-4">
-            Products ({products.length})
+            {`${t("farmer.products")} (${products.length})`}
           </Text>
 
           {products.length === 0 ? (
             <View className="items-center py-12">
               <Text className="text-4xl mb-3">🌱</Text>
               <Text className="text-muted text-base text-center">
-                This farmer has no products yet
+                {t("farmer.noProducts")}
               </Text>
             </View>
           ) : (
@@ -129,14 +138,15 @@ export default function FarmerProfileScreen({ navigation, route }) {
               <ProductCard
                 key={product.id}
                 product={{ ...product, farmer: { name: farmer.name } }}
-                onPress={() => navigation.navigate('ProductDetail', {
-                  productId: product.id,
-                })}
+                onPress={() =>
+                  navigation.navigate("ProductDetail", {
+                    productId: product.id,
+                  })
+                }
               />
             ))
           )}
         </View>
-
       </ScrollView>
     </View>
   );
