@@ -38,6 +38,10 @@ export const authAPI = {
   me:       ()      => api.get('/auth/me'),
 };
 
+export const usersAPI = {
+  savePushToken: (token) => api.post('/users/push-token', { token }),
+};
+
 export const productsAPI = {
   getAll: (params) => api.get('/products', { params }),
   getById:            (id)     => api.get(`/products/${id}`),

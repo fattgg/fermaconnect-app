@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import i18n from "./i18n";
-
+import usePushNotifications from "./hooks/usePushNotifications";
 import useAuth from "./hooks/useAuth";
 
 // Auth screens
@@ -191,6 +191,7 @@ function FarmerNavigator() {
 export default function App() {
   const { isLoading, isAuthenticated, isFarmer, loadFromStorage } = useAuth();
   const { currentLanguage } = useLanguageStore();
+  usePushNotifications();
   useEffect(() => {
     const initialize = async () => {
       await initI18n();
