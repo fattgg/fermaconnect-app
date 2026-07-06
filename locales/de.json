@@ -139,7 +139,8 @@
     "noOrders": "Noch keine Bestellungen",
     "noOrdersDesc": "Produkte durchsuchen und erste Bestellung aufgeben",
     "browseProducts": "Produkte durchsuchen",
-    "note": "Hinweis: {{note}}"
+    "note": "Hinweis: {{note}}",
+    "leaveReview": "Bewertung abgeben"
   },
   "dashboard": {
     "greeting": "Guten Morgen,",

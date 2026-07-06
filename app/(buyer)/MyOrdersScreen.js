@@ -13,8 +13,9 @@ import { ordersAPI } from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../constants";
 import { useTranslation } from "react-i18next";
+import ReviewModal from "../../components/shared/ReviewModal";
 
-function OrderCard({ order, onPress }) {
+function OrderCard({ order, onPress, onOpenReview }) {
   const { t } = useTranslation();
   const product = order.product;
   const hasPhoto = product?.photo_urls && product.photo_urls.length > 0;
@@ -86,6 +87,17 @@ function OrderCard({ order, onPress }) {
           </Text>
         </View>
       )}
+
+      {order.status === "completed" && (
+        <TouchableOpacity
+          className="mx-4 mb-4 bg-primary/10 rounded-xl py-2 items-center"
+          onPress={onOpenReview}
+        >
+          <Text className="text-primary font-bold text-sm">
+            {t("myOrders.leaveReview")}
+          </Text>
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 }
@@ -97,6 +109,8 @@ export default function MyOrdersScreen({ navigation }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [reviewModalVisible, setReviewModalVisible] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", fetchOrders);
@@ -118,6 +132,11 @@ export default function MyOrdersScreen({ navigation }) {
   const handleRefresh = () => {
     setRefreshing(true);
     fetchOrders();
+  };
+
+  const handleOpenReview = (orderId) => {
+    setSelectedOrderId(orderId);
+    setReviewModalVisible(true);
   };
 
   if (loading) {
@@ -154,7 +173,13 @@ export default function MyOrdersScreen({ navigation }) {
       <FlatList
         data={orders}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <OrderCard order={item} onPress={() => {}} />}
+        renderItem={({ item }) => (
+          <OrderCard
+            order={item}
+            onPress={() => {}}
+            onOpenReview={() => handleOpenReview(item.id)}
+          />
+        )}
         contentContainerStyle={{ padding: 16 }}
         refreshControl={
           <RefreshControl
@@ -196,6 +221,13 @@ export default function MyOrdersScreen({ navigation }) {
             </View>
           ) : null
         }
+      />
+
+      <ReviewModal
+        visible={reviewModalVisible}
+        orderId={selectedOrderId}
+        onClose={() => setReviewModalVisible(false)}
+        onSubmitted={fetchOrders}
       />
     </View>
   );

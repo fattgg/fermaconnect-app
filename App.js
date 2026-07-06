@@ -30,6 +30,7 @@ import IncomingOrdersScreen from "./app/(farmer)/IncomingOrdersScreen";
 import { initI18n } from "./i18n";
 import SettingsScreen from "./components/ui/SettingsScreen";
 import useLanguageStore from "./store/languageStore";
+import Toast from "react-native-toast-message";
 
 const Stack = createNativeStackNavigator();
 const BuyerStack = createNativeStackNavigator();
@@ -210,10 +211,13 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer key={currentLanguage}>
-      {!isAuthenticated && <AuthStack />}
-      {isAuthenticated && isFarmer && <FarmerNavigator />}
-      {isAuthenticated && !isFarmer && <BuyerNavigator />}
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        {!isAuthenticated && <AuthStack />}
+        {isAuthenticated && isFarmer && <FarmerNavigator />}
+        {isAuthenticated && !isFarmer && <BuyerNavigator />}
+      </NavigationContainer>
+      <Toast />
+    </>
   );
 }

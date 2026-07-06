@@ -139,7 +139,8 @@
     "noOrders": "Asnjë porosi akoma",
     "noOrdersDesc": "Shfleto produktet dhe bëj porosinë tënde të parë",
     "browseProducts": "Shfleto produktet",
-    "note": "Shënim: {{note}}"
+    "note": "Shënim: {{note}}",
+    "leaveReview": "Lëre një vlerësim"
   },
   "dashboard": {
     "greeting": "Mirëmëngjes,",

@@ -139,7 +139,8 @@
     "noOrders": "No orders yet",
     "noOrdersDesc": "Browse products and place your first order",
     "browseProducts": "Browse products",
-    "note": "Note: {{note}}"
+    "note": "Note: {{note}}",
+    "leaveReview": "Leave a review"
   },
   "dashboard": {
     "greeting": "Good morning,",
