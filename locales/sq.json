@@ -112,7 +112,9 @@
     "startingFrom": "Duke filluar nga",
     "products": "Produktet",
     "noProducts": "Ky fermer nuk ka produkte akoma",
-    "farmerLocation": "📍 {{municipality}}"
+    "farmerLocation": "📍 {{municipality}}",
+    "reviews": "Vlerësime",
+    "reviewCount": "{{count}} vlerësime"
   },
   "order": {
     "requestTitle": "Bëj Porosi",

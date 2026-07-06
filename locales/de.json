@@ -112,7 +112,9 @@
     "startingFrom": "Ab",
     "products": "Produkte",
     "noProducts": "Dieser Bauer hat noch keine Produkte",
-    "farmerLocation": "📍 {{municipality}}"
+    "farmerLocation": "📍 {{municipality}}",
+    "reviews": "Bewertungen",
+    "reviewCount": "{{count}} Bewertungen"
   },
   "order": {
     "requestTitle": "Bestellung anfragen",

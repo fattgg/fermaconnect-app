@@ -7,15 +7,18 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { farmersAPI } from "../../services/api";
+import { farmersAPI, reviewsAPI } from "../../services/api";
 import { useTranslation } from "react-i18next";
 import ProductCard from "../../components/shared/ProductCard";
+import StarRating from "../../components/shared/StarRating";
 
 export default function FarmerProfileScreen({ navigation, route }) {
   const { farmerId } = route.params;
   const { t } = useTranslation();
   const [farmer, setFarmer] = useState(null);
   const [products, setProducts] = useState([]);
+  const [reviewStats, setReviewStats] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,12 +27,15 @@ export default function FarmerProfileScreen({ navigation, route }) {
 
   const fetchFarmer = async () => {
     try {
-      const [profileRes, productsRes] = await Promise.all([
+      const [profileRes, productsRes, reviewsRes] = await Promise.all([
         farmersAPI.getProfile(farmerId),
         farmersAPI.getProducts(farmerId),
+        reviewsAPI.getByFarmer(farmerId),
       ]);
       setFarmer(profileRes.data);
       setProducts(productsRes.data.products);
+      setReviewStats(reviewsRes.data.stats);
+      setReviews(reviewsRes.data.reviews);
     } catch (error) {
       Alert.alert("Error", "Failed to load farmer profile");
       navigation.goBack();
@@ -45,7 +51,6 @@ export default function FarmerProfileScreen({ navigation, route }) {
       </View>
     );
   }
-
   if (!farmer) return null;
 
   return (
@@ -58,7 +63,6 @@ export default function FarmerProfileScreen({ navigation, route }) {
           >
             <Text className="text-white text-base">← {t("common.back")}</Text>
           </TouchableOpacity>
-
           <View className="flex-row items-center gap-x-4">
             <View className="w-20 h-20 rounded-full bg-white/20 items-center justify-center">
               <Text className="text-white text-3xl font-bold">
@@ -78,6 +82,21 @@ export default function FarmerProfileScreen({ navigation, route }) {
                   </View>
                 )}
               </View>
+
+              {reviewStats && reviewStats.total > 0 && (
+                <View className="flex-row items-center gap-x-2 mt-1">
+                  <StarRating
+                    rating={Math.round(reviewStats.average)}
+                    readonly
+                    size={16}
+                  />
+                  <Text className="text-white/90 text-sm">
+                    {reviewStats.average} (
+                    {t("farmer.reviewCount", { count: reviewStats.total })})
+                  </Text>
+                </View>
+              )}
+
               {farmer.municipality && (
                 <Text className="text-white/80 text-sm mt-1">
                   📍 {farmer.municipality}
@@ -121,11 +140,10 @@ export default function FarmerProfileScreen({ navigation, route }) {
           </View>
         </View>
 
-        <View className="px-6 pt-6 pb-10">
+        <View className="px-6 pt-6 pb-2">
           <Text className="text-dark font-bold text-lg mb-4">
             {`${t("farmer.products")} (${products.length})`}
           </Text>
-
           {products.length === 0 ? (
             <View className="items-center py-12">
               <Text className="text-4xl mb-3">🌱</Text>
@@ -147,6 +165,32 @@ export default function FarmerProfileScreen({ navigation, route }) {
             ))
           )}
         </View>
+
+        {reviews.length > 0 && (
+          <View className="px-6 pb-10">
+            <Text className="text-dark font-bold text-lg mb-4">
+              {`${t("farmer.reviews")} (${reviewStats.total})`}
+            </Text>
+            {reviews.map((review) => (
+              <View key={review.id} className="bg-white rounded-2xl p-4 mb-3">
+                <View className="flex-row items-center justify-between mb-2">
+                  <Text className="text-dark font-bold text-sm">
+                    {review.buyer.name}
+                  </Text>
+                  <Text className="text-muted text-xs">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </Text>
+                </View>
+                <StarRating rating={review.rating} readonly size={16} />
+                {review.comment && (
+                  <Text className="text-dark text-sm mt-2">
+                    {review.comment}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </View>
   );

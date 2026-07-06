@@ -112,7 +112,9 @@
     "startingFrom": "Starting from",
     "products": "Products",
     "noProducts": "This farmer has no products yet",
-    "farmerLocation": "📍 {{municipality}}"
+    "farmerLocation": "📍 {{municipality}}",
+    "reviews": "Reviews",
+    "reviewCount": "{{count}} reviews"
   },
   "order": {
     "requestTitle": "Request Order",
