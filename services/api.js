@@ -65,6 +65,14 @@ export const farmersAPI = {
   getProducts: (id) => api.get(`/farmers/${id}/products`),
 };
 
+export const usersAPI = {
+  savePushToken: (token) => api.post("/users/push-token", { token }),
+};
+
+export const chatAPI = {
+  getToken: () => api.post("/chat/token"),
+};
+
 export const reviewsAPI = {
   create: (data) => api.post("/reviews", data),
   getByFarmer: (farmerId) => api.get(`/reviews/farmer/${farmerId}`),
