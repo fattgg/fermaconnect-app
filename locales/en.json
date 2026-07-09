@@ -240,5 +240,12 @@
   "litre": "litre",
   "gram": "gram",
   "dozen": "dozen"
+},
+
+"chat": {
+  "title": "Messages",
+  "noChats": "No conversations yet",
+  "noChatsDesc": "Message a farmer from their profile to start a conversation",
+  "connectionFailed": "Could not connect to chat. Please try again later."
 }
 }

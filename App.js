@@ -8,24 +8,23 @@ import i18n from "./i18n";
 import usePushNotifications from "./hooks/usePushNotifications";
 import useAuth from "./hooks/useAuth";
 
-// Auth screens
 import OnboardingScreen from "./app/(auth)/OnboardingScreen";
 import LoginScreen from "./app/(auth)/LoginScreen";
 import RegisterScreen from "./app/(auth)/RegisterScreen";
 
-// Buyer screens
 import HomeScreen from "./app/(buyer)/HomeScreen";
 import ProductDetailScreen from "./app/(buyer)/ProductDetailScreen";
 import FarmerProfileScreen from "./app/(buyer)/FarmerProfileScreen";
 import OrderRequestScreen from "./app/(buyer)/OrderRequestScreen";
 import MyOrdersScreen from "./app/(buyer)/MyOrdersScreen";
 
-// Farmer screens
 import DashboardScreen from "./app/(farmer)/DashboardScreen";
 import MyListingsScreen from "./app/(farmer)/MyListingsScreen";
 import AddProductScreen from "./app/(farmer)/AddProductScreen";
 import EditProductScreen from "./app/(farmer)/EditProductScreen";
 import IncomingOrdersScreen from "./app/(farmer)/IncomingOrdersScreen";
+
+import ChatListScreen from "./app/(buyer)/ChatListScreen";
 
 import { initI18n } from "./i18n";
 import SettingsScreen from "./components/ui/SettingsScreen";
@@ -42,7 +41,6 @@ const linking = {
   config: {},
 };
 
-// ─── Auth Stack ───────────────────────────────────────────────
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -53,7 +51,6 @@ function AuthStack() {
   );
 }
 
-// ─── Buyer Tabs ───────────────────────────────────────────────
 function BuyerTabs() {
   return (
     <Tab.Navigator
@@ -91,6 +88,16 @@ function BuyerTabs() {
         }}
       />
       <Tab.Screen
+        name="Chat"
+        component={ChatListScreen}
+        options={{
+          tabBarLabel: i18n.t("chat.title"),
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>💬</Text>
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
@@ -104,7 +111,6 @@ function BuyerTabs() {
   );
 }
 
-// ─── Buyer Navigator ──────────────────────────────────────────
 function BuyerNavigator() {
   return (
     <BuyerStack.Navigator screenOptions={{ headerShown: false }}>
@@ -116,7 +122,6 @@ function BuyerNavigator() {
   );
 }
 
-// ─── Farmer Tabs ──────────────────────────────────────────────
 function FarmerTabs() {
   return (
     <Tab.Navigator
@@ -164,6 +169,16 @@ function FarmerTabs() {
         }}
       />
       <Tab.Screen
+        name="Chat"
+        component={ChatListScreen}
+        options={{
+          tabBarLabel: i18n.t("chat.title"),
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>💬</Text>
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
@@ -177,7 +192,6 @@ function FarmerTabs() {
   );
 }
 
-// ─── Farmer Navigator ─────────────────────────────────────────
 function FarmerNavigator() {
   return (
     <FarmerStack.Navigator screenOptions={{ headerShown: false }}>
@@ -188,7 +202,6 @@ function FarmerNavigator() {
   );
 }
 
-// ─── Root ─────────────────────────────────────────────────────
 export default function App() {
   const { isLoading, isAuthenticated, isFarmer, loadFromStorage } = useAuth();
   const { currentLanguage } = useLanguageStore();

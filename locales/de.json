@@ -240,5 +240,11 @@
   "litre": "Liter",
   "gram": "Gramm",
   "dozen": "Dutzend"
+},
+"chat": {
+  "title": "Nachrichten",
+  "noChats": "Noch keine Unterhaltungen",
+  "noChatsDesc": "Schreibe einem Bauern über sein Profil, um eine Unterhaltung zu beginnen",
+  "connectionFailed": "Verbindung zum Chat fehlgeschlagen. Bitte später erneut versuchen."
 }
 }
