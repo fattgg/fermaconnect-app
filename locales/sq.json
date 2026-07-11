@@ -245,6 +245,7 @@
   "title": "Mesazhet",
   "noChats": "Ende nuk ka biseda",
   "noChatsDesc": "Dërgoji mesazh një fermeri nga profili i tij për të filluar një bisedë",
-  "connectionFailed": "Nuk u lidh me chat-in. Provo përsëri më vonë."
+  "connectionFailed": "Nuk u lidh me chat-in. Provo përsëri më vonë.",
+  "messageButton": "Dërgo mesazh"
 }
 }

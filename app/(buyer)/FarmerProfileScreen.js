@@ -11,6 +11,7 @@ import { farmersAPI, reviewsAPI } from "../../services/api";
 import { useTranslation } from "react-i18next";
 import ProductCard from "../../components/shared/ProductCard";
 import StarRating from "../../components/shared/StarRating";
+import { getOrCreateDirectChannel } from "../../services/chatClient";
 
 export default function FarmerProfileScreen({ navigation, route }) {
   const { farmerId } = route.params;
@@ -20,6 +21,7 @@ export default function FarmerProfileScreen({ navigation, route }) {
   const [reviewStats, setReviewStats] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openingChat, setOpeningChat] = useState(false);
 
   useEffect(() => {
     fetchFarmer();
@@ -41,6 +43,17 @@ export default function FarmerProfileScreen({ navigation, route }) {
       navigation.goBack();
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleMessage = async () => {
+    setOpeningChat(true);
+    const channel = await getOrCreateDirectChannel(farmer.id, farmer.name);
+    setOpeningChat(false);
+    if (channel) {
+      navigation.navigate("ChatScreen", { channelId: channel.id });
+    } else {
+      Alert.alert("Error", "Could not open chat. Please try again.");
     }
   };
 
@@ -109,6 +122,16 @@ export default function FarmerProfileScreen({ navigation, route }) {
               </Text>
             </View>
           </View>
+
+          <TouchableOpacity
+            className="bg-white/20 rounded-xl py-3 mt-5 items-center"
+            onPress={handleMessage}
+            disabled={openingChat}
+          >
+            <Text className="text-white font-bold">
+              {openingChat ? "..." : `💬 ${t("chat.messageButton")}`}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View className="flex-row bg-white border-b border-gray-100">

@@ -245,6 +245,7 @@
   "title": "Nachrichten",
   "noChats": "Noch keine Unterhaltungen",
   "noChatsDesc": "Schreibe einem Bauern über sein Profil, um eine Unterhaltung zu beginnen",
-  "connectionFailed": "Verbindung zum Chat fehlgeschlagen. Bitte später erneut versuchen."
+  "connectionFailed": "Verbindung zum Chat fehlgeschlagen. Bitte später erneut versuchen.",
+  "messageButton": "Nachricht senden"
 }
 }

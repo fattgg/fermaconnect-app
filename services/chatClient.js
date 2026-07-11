@@ -41,4 +41,31 @@ export const disconnectChatUser = async () => {
   }
 };
 
+export const getOrCreateDirectChannel = async (otherUserId, otherUserName) => {
+  try {
+    if (!client || !client.userID) {
+      await connectChatUser();
+    }
+    if (!client || !client.userID) return null;
+
+    await chatAPI.ensureUser(otherUserId);
+
+    const sorted = [client.userID, otherUserId].sort().join("-");
+    let hash = 0;
+    for (let i = 0; i < sorted.length; i++) {
+      hash = (hash * 31 + sorted.charCodeAt(i)) >>> 0;
+    }
+    const channelId = `dm-${hash.toString(36)}-${sorted.slice(0, 12)}`;
+
+    const channel = client.channel("messaging", channelId, {
+      members: [client.userID, otherUserId],
+    });
+    await channel.watch();
+    return channel;
+  } catch (error) {
+    console.error("getOrCreateDirectChannel failed:", error.message);
+    return null;
+  }
+};
+
 export const getChatClient = () => client;

@@ -5,7 +5,7 @@ import {
   Chat,
   Channel,
   MessageList,
-  MessageInput,
+  MessageComposer,
 } from "stream-chat-expo";
 import { getChatClient } from "../../services/chatClient";
 import { useTranslation } from "react-i18next";
@@ -51,14 +51,18 @@ export default function ChatScreen({ navigation, route }) {
         </Text>
       </View>
 
-      <OverlayProvider>
-        <Chat client={client}>
-          <Channel channel={channel}>
-            <MessageList />
-            <MessageInput />
-          </Channel>
-        </Chat>
-      </OverlayProvider>
+      <View className="flex-1">
+        <OverlayProvider>
+          <Chat client={client}>
+            <Channel channel={channel} keyboardVerticalOffset={100}>
+              <View className="flex-1">
+                <MessageList />
+                <MessageComposer />
+              </View>
+            </Channel>
+          </Chat>
+        </OverlayProvider>
+      </View>
     </View>
   );
 }

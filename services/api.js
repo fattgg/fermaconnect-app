@@ -71,6 +71,7 @@ export const usersAPI = {
 
 export const chatAPI = {
   getToken: () => api.post("/chat/token"),
+  ensureUser: (userId) => api.post(`/chat/ensure-user/${userId}`),
 };
 
 export const reviewsAPI = {
