@@ -26,6 +26,7 @@ import EditProductScreen from "./app/(farmer)/EditProductScreen";
 import IncomingOrdersScreen from "./app/(farmer)/IncomingOrdersScreen";
 
 import ChatListScreen from "./app/(buyer)/ChatListScreen";
+import ChatScreen from "./app/(buyer)/ChatScreen";
 
 import { initI18n } from "./i18n";
 import SettingsScreen from "./components/ui/SettingsScreen";
@@ -119,6 +120,7 @@ function BuyerNavigator() {
       <BuyerStack.Screen name="ProductDetail" component={ProductDetailScreen} />
       <BuyerStack.Screen name="FarmerProfile" component={FarmerProfileScreen} />
       <BuyerStack.Screen name="OrderRequest" component={OrderRequestScreen} />
+      <BuyerStack.Screen name="ChatScreen" component={ChatScreen} />
     </BuyerStack.Navigator>
   );
 }
@@ -199,6 +201,7 @@ function FarmerNavigator() {
       <FarmerStack.Screen name="FarmerTabs" component={FarmerTabs} />
       <FarmerStack.Screen name="AddProduct" component={AddProductScreen} />
       <FarmerStack.Screen name="EditProduct" component={EditProductScreen} />
+      <FarmerStack.Screen name="ChatScreen" component={ChatScreen} />
     </FarmerStack.Navigator>
   );
 }
