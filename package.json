@@ -43,6 +43,10 @@
     "zustand": "^5.0.12"
   },
   "private": true,
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
   "devDependencies": {
     "babel-preset-expo": "~54.0.10"
   }

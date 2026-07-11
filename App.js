@@ -1,6 +1,7 @@
 import "./global.css";
 import { useState, useEffect } from "react";
 import { ActivityIndicator, View, Text } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -224,13 +225,13 @@ export default function App() {
   }
 
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         {!isAuthenticated && <AuthStack />}
         {isAuthenticated && isFarmer && <FarmerNavigator />}
         {isAuthenticated && !isFarmer && <BuyerNavigator />}
       </NavigationContainer>
       <Toast />
-    </>
+    </GestureHandlerRootView>
   );
 }
