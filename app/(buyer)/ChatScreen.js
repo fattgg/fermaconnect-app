@@ -9,6 +9,7 @@ import {
 } from "stream-chat-expo";
 import { getChatClient } from "../../services/chatClient";
 import { useTranslation } from "react-i18next";
+import { chatTheme, myMessageTheme } from "../../constants/chatTheme";
 
 export default function ChatScreen({ navigation, route }) {
   const { channelId } = route.params;
@@ -53,8 +54,12 @@ export default function ChatScreen({ navigation, route }) {
 
       <View className="flex-1">
         <OverlayProvider>
-          <Chat client={client}>
-            <Channel channel={channel} keyboardVerticalOffset={100}>
+          <Chat client={client} style={chatTheme}>
+            <Channel
+              channel={channel}
+              keyboardVerticalOffset={100}
+              myMessageTheme={myMessageTheme}
+            >
               <View className="flex-1">
                 <MessageList />
                 <MessageComposer />

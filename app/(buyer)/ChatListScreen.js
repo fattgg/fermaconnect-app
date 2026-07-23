@@ -4,6 +4,7 @@ import { OverlayProvider, Chat, ChannelList } from "stream-chat-expo";
 import { connectChatUser, getChatClient } from "../../services/chatClient";
 import useAuth from "../../hooks/useAuth";
 import { useTranslation } from "react-i18next";
+import { chatTheme } from "../../services/../constants/chatTheme";
 
 export default function ChatListScreen({ navigation }) {
   const { t } = useTranslation();
@@ -51,7 +52,7 @@ export default function ChatListScreen({ navigation }) {
       </View>
 
       <OverlayProvider>
-        <Chat client={client}>
+        <Chat client={client} style={chatTheme}>
           <ChannelList
             filters={filters}
             sort={sort}
