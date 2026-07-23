@@ -30,7 +30,12 @@
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.fermaconnectks.app",
-      "bundleIdentifier": "com.fermaconnectks.app"
+      "bundleIdentifier": "com.fermaconnectks.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyACLmJj-VreSF05HKwxdQjnqAGg-sxWgOc"
+        }
+      }
     },
     
     "web": {
