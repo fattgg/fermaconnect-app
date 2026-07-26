@@ -247,5 +247,11 @@
   "noChatsDesc": "Dërgoji mesazh një fermeri nga profili i tij për të filluar një bisedë",
   "connectionFailed": "Nuk u lidh me chat-in. Provo përsëri më vonë.",
   "messageButton": "Dërgo mesazh"
+},
+"map": {
+  "title": "Harta e fermerëve",
+  "subtitle": "{{count}} komuna me fermerë të verifikuar",
+  "farmerCount": "{{count}} fermerë",
+  "availableProducts": "{{count}} produkte në dispozicion"
 }
 }

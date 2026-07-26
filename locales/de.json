@@ -247,5 +247,11 @@
   "noChatsDesc": "Schreibe einem Bauern über sein Profil, um eine Unterhaltung zu beginnen",
   "connectionFailed": "Verbindung zum Chat fehlgeschlagen. Bitte später erneut versuchen.",
   "messageButton": "Nachricht senden"
+},
+"map": {
+  "title": "Bauernkarte",
+  "subtitle": "{{count}} Gemeinden mit verifizierten Bauern",
+  "farmerCount": "{{count}} Bauern",
+  "availableProducts": "{{count}} Produkte verfügbar"
 }
 }

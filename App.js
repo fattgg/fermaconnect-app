@@ -27,6 +27,7 @@ import IncomingOrdersScreen from "./app/(farmer)/IncomingOrdersScreen";
 
 import ChatListScreen from "./app/(buyer)/ChatListScreen";
 import ChatScreen from "./app/(buyer)/ChatScreen";
+import MapScreen from "./app/(buyer)/MapScreen";
 
 import { initI18n } from "./i18n";
 import SettingsScreen from "./components/ui/SettingsScreen";
@@ -76,6 +77,16 @@ function BuyerTabs() {
           tabBarLabel: i18n.t("home.browseTab"),
           tabBarIcon: ({ color }) => (
             <Text style={{ fontSize: 20, color }}>🛒</Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          tabBarLabel: i18n.t("map.title"),
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📍</Text>
           ),
         }}
       />

@@ -63,6 +63,7 @@ export const ordersAPI = {
 export const farmersAPI = {
   getProfile: (id) => api.get(`/farmers/${id}`),
   getProducts: (id) => api.get(`/farmers/${id}/products`),
+  getForMap: () => api.get("/farmers/map"),
 };
 
 export const usersAPI = {

@@ -248,5 +248,11 @@
   "noChatsDesc": "Message a farmer from their profile to start a conversation",
   "connectionFailed": "Could not connect to chat. Please try again later.",
   "messageButton": "Message"
+},
+"map": {
+  "title": "Farmer Map",
+  "subtitle": "{{count}} municipalities with verified farmers",
+  "farmerCount": "{{count}} farmers",
+  "availableProducts": "{{count}} products available"
 }
 }
