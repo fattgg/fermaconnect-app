@@ -23,6 +23,7 @@
     "verified": "Verifiziert",
     "pending": "Ausstehend",
     "accepted": "Akzeptiert",
+    "delivered": "Geliefert",
     "rejected": "Abgelehnt",
     "completed": "Abgeschlossen",
     "submit": "Absenden",
@@ -142,7 +143,11 @@
     "noOrdersDesc": "Produkte durchsuchen und erste Bestellung aufgeben",
     "browseProducts": "Produkte durchsuchen",
     "note": "Hinweis: {{note}}",
-    "leaveReview": "Bewertung abgeben"
+    "leaveReview": "Bewertung abgeben",
+    "confirmReceipt": "Erhalt & Zahlung bestätigen", 
+    "confirmReceiptTitle": "Erhalt bestätigen", 
+    "confirmReceiptMessage": "Bestätigen, dass du {{product}} erhalten und bar bezahlt hast?", 
+    "confirmFailed": "Bestellung konnte nicht bestätigt werden"
   },
   "dashboard": {
     "greeting": "Guten Morgen,",
@@ -214,7 +219,8 @@
     "noteSection": "Hinweis:",
     "reject": "✕ Ablehnen",
     "accept": "✓ Annehmen",
-    "markCompleted": "✓ Als abgeschlossen markieren",
+    "markDelivered": "Als geliefert markieren", 
+    "deliveredConfirm": "Diese Bestellung als an den Käufer geliefert markieren?",
     "noOrders": "Noch keine Bestellungen",
     "noOrdersDesc": "Bestellungen von Käufern erscheinen hier",
     "updateOrder": "Bestellung aktualisieren",

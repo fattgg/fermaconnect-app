@@ -130,10 +130,10 @@ function IncomingOrderCard({ order, onUpdateStatus }) {
         <View className="border-t border-gray-100">
           <TouchableOpacity
             className="py-3 items-center bg-primary/10"
-            onPress={() => onUpdateStatus(order, "completed")}
+            onPress={() => onUpdateStatus(order, "delivered")}
           >
             <Text className="text-primary font-bold text-sm">
-              {t("incomingOrders.markCompleted")}
+              {t("incomingOrders.markDelivered")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -174,7 +174,7 @@ export default function IncomingOrdersScreen({ navigation }) {
       rejected: t("incomingOrders.rejectConfirm", {
         product: order.product?.name,
       }),
-      completed: t("incomingOrders.completeConfirm"),
+      delivered: t("incomingOrders.deliveredConfirm"),
     };
 
     Alert.alert(t("incomingOrders.updateOrder"), messages[status], [

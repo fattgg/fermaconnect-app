@@ -15,7 +15,7 @@ import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../constants";
 import { useTranslation } from "react-i18next";
 import ReviewModal from "../../components/shared/ReviewModal";
 
-function OrderCard({ order, onPress, onOpenReview }) {
+function OrderCard({ order, onPress, onOpenReview, onConfirmReceipt }) {
   const { t } = useTranslation();
   const product = order.product;
   const hasPhoto = product?.photo_urls && product.photo_urls.length > 0;
@@ -88,6 +88,17 @@ function OrderCard({ order, onPress, onOpenReview }) {
         </View>
       )}
 
+      {order.status === "delivered" && (
+        <TouchableOpacity
+          className="mx-4 mb-4 bg-secondary rounded-xl py-3 items-center"
+          onPress={onConfirmReceipt}
+        >
+          <Text className="text-white font-bold text-sm">
+            {t("myOrders.confirmReceipt")}
+          </Text>
+        </TouchableOpacity>
+      )}
+
       {order.status === "completed" && (
         <TouchableOpacity
           className="mx-4 mb-4 bg-primary/10 rounded-xl py-2 items-center"
@@ -139,6 +150,31 @@ export default function MyOrdersScreen({ navigation }) {
     setReviewModalVisible(true);
   };
 
+  const handleConfirmReceipt = (order) => {
+    Alert.alert(
+      t("myOrders.confirmReceiptTitle"),
+      t("myOrders.confirmReceiptMessage", { product: order.product?.name }),
+      [
+        { text: t("common.cancel"), style: "cancel" },
+        {
+          text: t("common.confirm"),
+          onPress: async () => {
+            try {
+              await ordersAPI.updateStatus(order.id, "completed");
+              setOrders((prev) =>
+                prev.map((o) =>
+                  o.id === order.id ? { ...o, status: "completed" } : o,
+                ),
+              );
+            } catch (error) {
+              Alert.alert(t("common.error"), t("myOrders.confirmFailed"));
+            }
+          },
+        },
+      ],
+    );
+  };
+
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-light">
@@ -178,6 +214,7 @@ export default function MyOrdersScreen({ navigation }) {
             order={item}
             onPress={() => {}}
             onOpenReview={() => handleOpenReview(item.id)}
+            onConfirmReceipt={() => handleConfirmReceipt(item)}
           />
         )}
         contentContainerStyle={{ padding: 16 }}

@@ -24,6 +24,7 @@
     "pending": "Në pritje",
     "accepted": "Pranuar",
     "rejected": "Refuzuar",
+    "delivered": "E dorëzuar",
     "completed": "Përfunduar",
     "submit": "Dërgo",
     "sending": "Duke dërguar...",
@@ -142,7 +143,11 @@
     "noOrdersDesc": "Shfleto produktet dhe bëj porosinë tënde të parë",
     "browseProducts": "Shfleto produktet",
     "note": "Shënim: {{note}}",
-    "leaveReview": "Lëre një vlerësim"
+    "leaveReview": "Lëre një vlerësim",
+    "confirmReceipt": "Konfirmo pranimin & pagesën", 
+    "confirmReceiptTitle": "Konfirmo pranimin", 
+    "confirmReceiptMessage": "Konfirmon që e pranove {{product}} dhe pagove me para në dorë", 
+    "confirmFailed": "Nuk u konfirmua porosia"
   },
   "dashboard": {
     "greeting": "Mirëmëngjes,",
@@ -214,7 +219,8 @@
     "noteSection": "Shënim:",
     "reject": "✕ Refuzo",
     "accept": "✓ Prano",
-    "markCompleted": "✓ Shëno si të përfunduar",
+    "markDelivered": "Shëno si të dorëzuar", 
+    "deliveredConfirm": "Ta shënosh këtë porosi si të dorëzuar te blerësi?",
     "noOrders": "Asnjë porosi akoma",
     "noOrdersDesc": "Porositë nga blerësit do të shfaqen këtu",
     "updateOrder": "Përditëso porosinë",

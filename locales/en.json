@@ -24,6 +24,7 @@
     "pending": "Pending",
     "accepted": "Accepted",
     "rejected": "Rejected",
+    "delivered": "Delivered",
     "completed": "Completed",
     "submit": "Submit",
     "sending": "Sending...",
@@ -142,7 +143,10 @@
     "noOrdersDesc": "Browse products and place your first order",
     "browseProducts": "Browse products",
     "note": "Note: {{note}}",
-    "leaveReview": "Leave a review"
+    "leaveReview": "Leave a review",
+    "confirmReceipt": "Confirm receipt & payment", 
+    "confirmReceiptTitle": "Confirm receipt", 
+    "confirmReceiptMessage": "Confirm you received {{product}} and paid in cash?", "confirmFailed": "Could not confirm the order"
   },
   "dashboard": {
     "greeting": "Good morning,",
@@ -214,7 +218,8 @@
     "noteSection": "Note:",
     "reject": "✕ Reject",
     "accept": "✓ Accept",
-    "markCompleted": "✓ Mark as Completed",
+    "markDelivered": "Mark as delivered", 
+    "deliveredConfirm": "Mark this order as delivered to the buyer?",
     "noOrders": "No orders yet",
     "noOrdersDesc": "Orders from buyers will appear here",
     "updateOrder": "Update order",
